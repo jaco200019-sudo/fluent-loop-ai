@@ -1,0 +1,9 @@
+{
+  "name": "fluent-loop-pwa",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.mjs 5173"
+  }
+}
