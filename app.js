@@ -15,7 +15,169 @@ const defaultState = {
   todayKey: "",
   lessonSalt: 0,
   streak: 6,
-  practiceTest: null
+  practiceTest: null,
+  learningData: {
+    events: []
+  }
+};
+
+const extraLifeScenarios = {
+  apartment: {
+    label: "租房",
+    icon: "home",
+    name: "Iris, leasing agent",
+    hint: "练租房看房和询问费用",
+    start: "Hi. Are you here for the apartment viewing?",
+    startCn: "你好。你是来看这套公寓的吗？",
+    suggestions: ["Is the rent negotiable?", "Are utilities included?", "How much is the deposit?"],
+    suggestionsCn: ["房租可以商量吗？", "水电包含在内吗？", "押金是多少？"],
+    replies: [
+      "Yes. Let me show you the living room first.",
+      "The rent includes water, but electricity is separate.",
+      "The deposit is one month's rent.",
+      "The lease is for twelve months.",
+      "You can move in next week if you decide today.",
+      "There is a laundry room on the first floor."
+    ],
+    repliesCn: [
+      "是的。我先带你看客厅。",
+      "房租包含水费，但电费另算。",
+      "押金是一个月房租。",
+      "租期是十二个月。",
+      "如果你今天决定，下周可以搬进来。",
+      "一楼有洗衣房。"
+    ]
+  },
+  bank: {
+    label: "银行",
+    icon: "wallet",
+    name: "Mason, bank clerk",
+    hint: "练银行开户、转账和手续费",
+    start: "Hello. How can I help you today?",
+    startCn: "你好。今天需要办理什么业务？",
+    suggestions: ["I would like to open an account.", "Is there a monthly fee?", "Can I transfer money online?"],
+    suggestionsCn: ["我想开一个账户。", "有月费吗？", "我可以网上转账吗？"],
+    replies: [
+      "Sure. May I see your ID, please?",
+      "There is no monthly fee for this account.",
+      "You can transfer money through the mobile app.",
+      "The card will arrive in five business days.",
+      "Please fill out this form first.",
+      "Would you like a checking or savings account?"
+    ],
+    repliesCn: [
+      "可以。请给我看一下你的证件。",
+      "这个账户没有月费。",
+      "你可以通过手机应用转账。",
+      "银行卡会在五个工作日内寄到。",
+      "请先填写这张表。",
+      "你想开支票账户还是储蓄账户？"
+    ]
+  },
+  delivery: {
+    label: "快递退货",
+    icon: "package",
+    name: "Riley, support agent",
+    hint: "练快递取件、退货和退款",
+    start: "Hi. What is the issue with your order?",
+    startCn: "你好。你的订单有什么问题？",
+    suggestions: ["I would like to return this.", "Can I get a refund?", "My package has not arrived."],
+    suggestionsCn: ["我想退这个。", "可以退款吗？", "我的包裹还没到。"],
+    replies: [
+      "I can help with that. Do you have the order number?",
+      "The refund usually takes three to five business days.",
+      "We can send you a return label by email.",
+      "Please keep the receipt until the refund is complete.",
+      "The courier can pick it up tomorrow.",
+      "I am sorry about the delay."
+    ],
+    repliesCn: [
+      "我可以帮你处理。你有订单号吗？",
+      "退款通常需要三到五个工作日。",
+      "我们可以通过邮件给你退货标签。",
+      "退款完成前请保留小票。",
+      "快递员明天可以上门取件。",
+      "很抱歉延误了。"
+    ]
+  },
+  appointment: {
+    label: "预约",
+    icon: "phone",
+    name: "Ava, receptionist",
+    hint: "练电话预约和改时间",
+    start: "Good morning. What would you like to schedule?",
+    startCn: "早上好。你想预约什么？",
+    suggestions: ["I would like to make an appointment.", "Can I reschedule?", "Do you have anything available tomorrow?"],
+    suggestionsCn: ["我想预约。", "我可以改时间吗？", "明天有空位吗？"],
+    replies: [
+      "Sure. What day works best for you?",
+      "We have an opening tomorrow at three.",
+      "I can reschedule it for Friday morning.",
+      "May I have your name and phone number?",
+      "Please arrive ten minutes early.",
+      "I will send you a confirmation message."
+    ],
+    repliesCn: [
+      "可以。哪一天最适合你？",
+      "我们明天下午三点有空位。",
+      "我可以帮你改到周五上午。",
+      "可以留下你的姓名和电话吗？",
+      "请提前十分钟到。",
+      "我会给你发确认短信。"
+    ]
+  },
+  emergency: {
+    label: "紧急求助",
+    icon: "alert",
+    name: "Pat, help desk",
+    hint: "练紧急情况下清楚求助",
+    start: "Are you safe right now? Tell me what happened.",
+    startCn: "你现在安全吗？告诉我发生了什么。",
+    suggestions: ["I need help.", "I lost my phone.", "Can you call the police?"],
+    suggestionsCn: ["我需要帮助。", "我的手机丢了。", "你可以报警吗？"],
+    replies: [
+      "Stay where you are. I will help you step by step.",
+      "Please tell me your location.",
+      "I can call the police for you.",
+      "Do you need medical help?",
+      "Keep your documents with you if you can.",
+      "I will stay on the line with you."
+    ],
+    repliesCn: [
+      "待在原地。我会一步一步帮你。",
+      "请告诉我你的位置。",
+      "我可以帮你报警。",
+      "你需要医疗帮助吗？",
+      "如果可以，请把证件带在身边。",
+      "我会一直在线陪你。"
+    ]
+  },
+  social: {
+    label: "社交",
+    icon: "smile",
+    name: "Jamie, new friend",
+    hint: "练自我介绍和轻松聊天",
+    start: "Hi, I don't think we've met. I'm Jamie.",
+    startCn: "你好，我们好像还没见过。我是 Jamie。",
+    suggestions: ["Nice to meet you.", "I am learning English.", "What do you do?"],
+    suggestionsCn: ["很高兴认识你。", "我正在学英语。", "你是做什么的？"],
+    replies: [
+      "Nice to meet you too. How is your day going?",
+      "That is great. What made you start learning English?",
+      "I work in design. What about you?",
+      "Do you live around here?",
+      "What do you like to do on weekends?",
+      "Your English is clear. Keep going."
+    ],
+    repliesCn: [
+      "我也很高兴认识你。今天过得怎么样？",
+      "很好。是什么让你开始学英语的？",
+      "我做设计。你呢？",
+      "你住在这附近吗？",
+      "你周末喜欢做什么？",
+      "你的英语很清楚。继续说。"
+    ]
+  }
 };
 
 const taskTemplates = [
@@ -59,7 +221,12 @@ const taskPools = {
     { title: "复习高频动词", description: "get / need / help / make / take", icon: "book" },
     { title: "复习餐厅表达", description: "menu / order / bill / recommend", icon: "book" },
     { title: "复习酒店表达", description: "reservation / check in / room / key card", icon: "book" },
-    { title: "复习求助表达", description: "Could you help / I am looking for / I feel", icon: "book" }
+    { title: "复习求助表达", description: "Could you help / I am looking for / I feel", icon: "book" },
+    { title: "复习租房表达", description: "rent / deposit / utilities / viewing", icon: "book" },
+    { title: "复习银行表达", description: "account / transfer / fee / statement", icon: "book" },
+    { title: "复习退货表达", description: "return / refund / receipt / exchange", icon: "book" },
+    { title: "复习预约表达", description: "appointment / available / reschedule", icon: "book" },
+    { title: "复习紧急表达", description: "emergency / lost / help / police", icon: "book" }
   ],
   listening: [
     { title: "听力 4 分钟", description: "咖啡店里的自然寒暄", icon: "audio" },
@@ -68,7 +235,11 @@ const taskPools = {
     { title: "听力 4 分钟", description: "面试里的 tell me about yourself", icon: "audio" },
     { title: "听力 5 分钟", description: "餐厅点餐和买单", icon: "audio" },
     { title: "听力 4 分钟", description: "打车确认目的地和价格", icon: "audio" },
-    { title: "听力 6 分钟", description: "医生问症状和过敏史", icon: "audio" }
+    { title: "听力 6 分钟", description: "医生问症状和过敏史", icon: "audio" },
+    { title: "听力 5 分钟", description: "银行开户和手续费说明", icon: "audio" },
+    { title: "听力 5 分钟", description: "电话预约和改时间", icon: "audio" },
+    { title: "听力 4 分钟", description: "快递取件和退货流程", icon: "audio" },
+    { title: "听力 6 分钟", description: "租房看房和押金说明", icon: "audio" }
   ],
   conversation: [
     { title: "AI 场景对话", description: "点咖啡，要求换成燕麦奶", icon: "chat", scenario: "coffee" },
@@ -79,7 +250,13 @@ const taskPools = {
     { title: "AI 场景对话", description: "酒店入住，确认预订和早餐", icon: "chat", scenario: "hotel" },
     { title: "AI 场景对话", description: "超市购物，询问价格和付款", icon: "chat", scenario: "shopping" },
     { title: "AI 场景对话", description: "打车出行，确认目的地和费用", icon: "chat", scenario: "taxi" },
-    { title: "AI 场景对话", description: "看医生，描述症状和用药", icon: "chat", scenario: "doctor" }
+    { title: "AI 场景对话", description: "看医生，描述症状和用药", icon: "chat", scenario: "doctor" },
+    { title: "AI 场景对话", description: "租房看房，询问押金和水电", icon: "chat", scenario: "apartment" },
+    { title: "AI 场景对话", description: "银行办事，开户和转账咨询", icon: "chat", scenario: "bank" },
+    { title: "AI 场景对话", description: "快递退货，说明订单和退款", icon: "chat", scenario: "delivery" },
+    { title: "AI 场景对话", description: "电话预约，确认时间和改期", icon: "chat", scenario: "appointment" },
+    { title: "AI 场景对话", description: "紧急求助，说明位置和问题", icon: "chat", scenario: "emergency" },
+    { title: "AI 场景对话", description: "社交寒暄，认识新朋友", icon: "chat", scenario: "social" }
   ],
   writing: [
     { title: "写 3 句话总结", description: "用今天的表达写自己的例句", icon: "pen" },
@@ -87,7 +264,10 @@ const taskPools = {
     { title: "写 3 个替换句", description: "把 I want 换成更自然的表达", icon: "pen" },
     { title: "写 1 个复盘", description: "记录今天最想记住的 1 个词", icon: "pen" },
     { title: "写 3 个请求句", description: "用 Could I / Could you / I need 写真实需求", icon: "pen" },
-    { title: "写 1 个生活任务", description: "模拟今天要在国外完成的一件小事", icon: "pen" }
+    { title: "写 1 个生活任务", description: "模拟今天要在国外完成的一件小事", icon: "pen" },
+    { title: "写 1 个预约短信", description: "说明想预约的时间和服务", icon: "pen" },
+    { title: "写 1 个退货说明", description: "用英文解释订单问题和退款请求", icon: "pen" },
+    { title: "写 1 个求助句", description: "说明你在哪里、遇到什么问题", icon: "pen" }
   ],
   test: [
     { title: "今日小测", description: "选择正确表达，再写 1 句真实英语", icon: "test" },
@@ -98,26 +278,119 @@ const taskPools = {
 
 const dailyProfiles = {
   "daily-speaking": {
-    scenarios: ["coffee", "restaurant", "shopping", "taxi", "doctor", "hotel", "travel", "meeting", "interview"],
+    scenarios: ["coffee", "restaurant", "shopping", "taxi", "doctor", "hotel", "travel", "apartment", "bank", "delivery", "appointment", "emergency", "social", "meeting", "interview"],
     titles: ["今天练 1 场真实开口，复习 3 个高频表达", "今天把一句话说自然，再练一个生活场景", "今天用英语完成一个小任务"],
     copies: ["内容会根据你的目标、等级和日期轮换；先敢说，再慢慢说自然。", "系统会优先安排日常最常用的词和句型，降低开口压力。", "今天重点是礼貌请求、确认信息和自然追问。"]
   },
   "work-english": {
-    scenarios: ["meeting", "interview", "hotel", "taxi", "coffee", "restaurant", "travel"],
+    scenarios: ["meeting", "interview", "appointment", "bank", "hotel", "taxi", "coffee", "restaurant", "travel", "social"],
     titles: ["今天练工作同步，复习会议高频表达", "今天练清楚表达进度和卡点", "今天把工作英语说得更礼貌"],
     copies: ["重点练 update、blocker、clarify 这类工作场景高频表达。", "内容会向会议、面试和协作沟通倾斜。", "先学能马上用的短句，再练更完整的解释。"]
   },
   travel: {
-    scenarios: ["travel", "hotel", "taxi", "restaurant", "shopping", "coffee", "doctor", "meeting", "interview"],
+    scenarios: ["travel", "hotel", "taxi", "restaurant", "shopping", "coffee", "doctor", "delivery", "emergency", "appointment", "social", "meeting", "interview"],
     titles: ["今天练旅行问路，复习求助表达", "今天练机场/车站/点餐里的常用句", "今天把旅行英语说完整"],
     copies: ["重点练问路、确认时间、求助和点餐。", "先掌握旅行中最常遇到的短问答。", "今天的内容更偏向出门就能用的表达。"]
   },
   exam: {
-    scenarios: ["interview", "meeting", "restaurant", "hotel", "coffee", "travel", "shopping"],
+    scenarios: ["interview", "meeting", "restaurant", "hotel", "coffee", "travel", "shopping", "appointment", "bank", "social"],
     titles: ["今天练基础语法和高频搭配", "今天用短句建立英语反应速度", "今天复习容易错的基础表达"],
     copies: ["重点练搭配、时态和更自然的句子选择。", "先把高频错误改掉，再慢慢提高表达长度。", "每题会给正确答案和中文解释，方便你复盘。"]
   }
 };
+
+const lifeCourses = [
+  {
+    scenario: "coffee",
+    title: "咖啡点单",
+    description: "饮品、杯型、奶类、堂食外带",
+    phrases: ["Could I get an iced latte?", "For here, please."]
+  },
+  {
+    scenario: "travel",
+    title: "旅行问路",
+    description: "路线、站台、车票、时间",
+    phrases: ["How do I get to the airport?", "Which platform should I use?"]
+  },
+  {
+    scenario: "interview",
+    title: "面试介绍",
+    description: "经验、优势、例子、追问",
+    phrases: ["My strength is...", "Could you clarify the role?"]
+  },
+  {
+    scenario: "restaurant",
+    title: "餐厅点餐",
+    description: "推荐、点菜、过敏、买单",
+    phrases: ["What do you recommend?", "Can I get the bill?"]
+  },
+  {
+    scenario: "hotel",
+    title: "酒店入住",
+    description: "预订、入住、早餐、退房",
+    phrases: ["I have a reservation.", "Is breakfast included?"]
+  },
+  {
+    scenario: "shopping",
+    title: "超市购物",
+    description: "询价、尺码、付款、退换",
+    phrases: ["How much is this?", "Can I pay by card?"]
+  },
+  {
+    scenario: "taxi",
+    title: "打车出行",
+    description: "目的地、路线、费用、下车点",
+    phrases: ["Could you take me to this address?", "How long will it take?"]
+  },
+  {
+    scenario: "doctor",
+    title: "看医生",
+    description: "症状、发烧、过敏、用药",
+    phrases: ["I have a sore throat.", "Do I need any medicine?"]
+  },
+  {
+    scenario: "apartment",
+    title: "租房看房",
+    description: "看房、房租、押金、水电",
+    phrases: ["Is the rent negotiable?", "Are utilities included?"]
+  },
+  {
+    scenario: "bank",
+    title: "银行办事",
+    description: "开户、转账、手续费、流水",
+    phrases: ["I would like to open an account.", "Is there a fee?"]
+  },
+  {
+    scenario: "delivery",
+    title: "快递退货",
+    description: "取件、订单、退货、退款",
+    phrases: ["I would like to return this.", "Can I get a refund?"]
+  },
+  {
+    scenario: "appointment",
+    title: "电话预约",
+    description: "预约、改期、确认时间",
+    phrases: ["I would like to make an appointment.", "Can I reschedule?"]
+  },
+  {
+    scenario: "emergency",
+    title: "紧急求助",
+    description: "迷路、丢东西、生病、报警",
+    phrases: ["I need help.", "I lost my phone."]
+  },
+  {
+    scenario: "social",
+    title: "社交寒暄",
+    description: "介绍自己、兴趣、继续聊天",
+    phrases: ["Nice to meet you.", "What do you do?"]
+  },
+  {
+    scenario: "meeting",
+    title: "会议沟通",
+    description: "进度、卡点、时间线、跟进",
+    phrases: ["The blocker is...", "I can follow up tomorrow."]
+  }
+];
 
 const questions = [
   {
@@ -385,6 +658,51 @@ const practiceTestBank = [
     correct: "Could you clarify that?",
     options: ["Could you clarify that?", "What?", "Say again now."],
     explanation: "Could you clarify that? 比 What? 更礼貌，也更适合真实交流。"
+  },
+  {
+    id: "test-apartment-utilities",
+    scenario: "apartment",
+    skill: "租房看房",
+    prompt: "你想问“水电包含在房租里吗？”。",
+    correct: "Are utilities included?",
+    options: ["Are utilities included?", "Utilities are rent inside?", "Water electric have?"],
+    explanation: "Are utilities included? 是租房时询问水电费用是否包含的自然表达。"
+  },
+  {
+    id: "test-bank-account",
+    scenario: "bank",
+    skill: "银行开户",
+    prompt: "你想说“我想开一个账户”。",
+    correct: "I would like to open an account.",
+    options: ["I would like to open an account.", "I want make bank thing.", "Open account me."],
+    explanation: "I would like to open an account. 礼貌清楚，适合银行柜台。"
+  },
+  {
+    id: "test-delivery-refund",
+    scenario: "delivery",
+    skill: "退货退款",
+    prompt: "你想问“可以退款吗？”。",
+    correct: "Can I get a refund?",
+    options: ["Can I get a refund?", "Can money back me?", "I want return money now."],
+    explanation: "Can I get a refund? 是退货和售后场景的高频句。"
+  },
+  {
+    id: "test-appointment-reschedule",
+    scenario: "appointment",
+    skill: "预约改期",
+    prompt: "你想问“我可以改时间吗？”。",
+    correct: "Can I reschedule?",
+    options: ["Can I reschedule?", "Can I change other time me?", "I want new time change."],
+    explanation: "Can I reschedule? 简短自然，适合电话预约、医生、理发等场景。"
+  },
+  {
+    id: "test-emergency-help",
+    scenario: "emergency",
+    skill: "紧急求助",
+    prompt: "你遇到麻烦，想先说“我需要帮助”。",
+    correct: "I need help.",
+    options: ["I need help.", "Help me problem thing.", "I am need helping."],
+    explanation: "I need help. 最短、最清楚，紧急情况下优先学会。"
   }
 ];
 
@@ -624,7 +942,8 @@ const scenarios = {
       "你对任何药物过敏吗？",
       "如果情况变严重，请明天再来。"
     ]
-  }
+  },
+  ...extraLifeScenarios
 };
 
 const cards = [
@@ -711,6 +1030,41 @@ const cards = [
     example: "I'll be there in five minutes.",
     exampleCn: "我五分钟后到。",
     tag: "时间表达"
+  },
+  {
+    phrase: "Are utilities included?",
+    meaning: "租房时询问水电、网络等费用是否包含在房租里。",
+    example: "Are utilities included in the rent?",
+    exampleCn: "水电包含在房租里吗？",
+    tag: "租房看房"
+  },
+  {
+    phrase: "I would like to open an account.",
+    meaning: "银行开户的礼貌表达，比 I want account 更自然。",
+    example: "I would like to open a savings account.",
+    exampleCn: "我想开一个储蓄账户。",
+    tag: "银行办事"
+  },
+  {
+    phrase: "Can I reschedule?",
+    meaning: "预约改时间时最短、最自然的说法。",
+    example: "Can I reschedule my appointment for Friday?",
+    exampleCn: "我可以把预约改到周五吗？",
+    tag: "电话预约"
+  },
+  {
+    phrase: "Can I get a refund?",
+    meaning: "退货、服务取消或订单出错时请求退款。",
+    example: "The item is damaged. Can I get a refund?",
+    exampleCn: "这个商品坏了。可以退款吗？",
+    tag: "退货退款"
+  },
+  {
+    phrase: "I need help.",
+    meaning: "紧急情况下最重要的短句，先把需求说清楚。",
+    example: "I need help. I lost my phone.",
+    exampleCn: "我需要帮助。我的手机丢了。",
+    tag: "紧急求助"
   }
 ];
 
@@ -894,6 +1248,51 @@ const highFrequencyWords = [
     example: "Is breakfast included?",
     exampleCn: "包含早餐吗？",
     reason: "确认服务内容时非常好用。"
+  },
+  {
+    word: "deposit",
+    meaning: "押金。租房、酒店、租车都常见。",
+    rank: 21,
+    usage: "57%",
+    example: "How much is the deposit?",
+    exampleCn: "押金是多少？",
+    reason: "租房和预订场景很实用。"
+  },
+  {
+    word: "account",
+    meaning: "账户。银行、网站、手机服务都会用到。",
+    rank: 22,
+    usage: "84%",
+    example: "I would like to open an account.",
+    exampleCn: "我想开一个账户。",
+    reason: "办理服务时的核心名词。"
+  },
+  {
+    word: "refund",
+    meaning: "退款。购物和售后高频。",
+    rank: 23,
+    usage: "63%",
+    example: "Can I get a refund?",
+    exampleCn: "可以退款吗？",
+    reason: "退货、订单问题、服务取消都能用。"
+  },
+  {
+    word: "appointment",
+    meaning: "预约。看医生、理发、办事都常用。",
+    rank: 24,
+    usage: "69%",
+    example: "I would like to make an appointment.",
+    exampleCn: "我想预约。",
+    reason: "电话沟通里非常高频。"
+  },
+  {
+    word: "emergency",
+    meaning: "紧急情况。需要求助时必须会。",
+    rank: 25,
+    usage: "55%",
+    example: "This is an emergency.",
+    exampleCn: "这是紧急情况。",
+    reason: "安全相关表达优先级很高。"
   }
 ];
 
@@ -913,7 +1312,13 @@ const iconPaths = {
   hotel: '<path d="M3 21V7a2 2 0 0 1 2-2h6v16"/><path d="M21 21V11a2 2 0 0 0-2-2h-8"/><path d="M7 9h.01"/><path d="M7 13h.01"/><path d="M15 13h2"/><path d="M15 17h2"/><path d="M2 21h20"/>',
   shopping: '<path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/>',
   car: '<path d="M5 17h14"/><path d="M6 17l1-6a3 3 0 0 1 3-2h4a3 3 0 0 1 3 2l1 6"/><path d="M7 17v2"/><path d="M17 17v2"/><path d="M8 13h.01"/><path d="M16 13h.01"/>',
-  heart: '<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8Z"/>'
+  heart: '<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8Z"/>',
+  home: '<path d="M3 10.5 12 3l9 7.5"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/>',
+  wallet: '<path d="M3 7h16a2 2 0 0 1 2 2v10H5a2 2 0 0 1-2-2Z"/><path d="M3 7V5a2 2 0 0 1 2-2h12v4"/><path d="M17 13h.01"/>',
+  package: '<path d="m21 8-9-5-9 5 9 5 9-5Z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/>',
+  phone: '<path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.9a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.5c.9.3 1.9.6 2.9.7a2 2 0 0 1 1.7 2Z"/>',
+  alert: '<path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4"/><path d="M12 17h.01"/>',
+  smile: '<circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><path d="M9 9h.01"/><path d="M15 9h.01"/>'
 };
 
 const els = {
@@ -941,6 +1346,8 @@ const els = {
   minutesLeft: document.getElementById("minutesLeft"),
   todayProgress: document.getElementById("todayProgress"),
   taskList: document.getElementById("taskList"),
+  courseCount: document.getElementById("courseCount"),
+  courseLibraryList: document.getElementById("courseLibraryList"),
   openSummaryButton: document.getElementById("openSummaryButton"),
   dailyTestScore: document.getElementById("dailyTestScore"),
   dailyTestMeter: document.getElementById("dailyTestMeter"),
@@ -973,6 +1380,9 @@ const els = {
   wordBankList: document.getElementById("wordBankList"),
   methodRecommendation: document.getElementById("methodRecommendation"),
   abilityTestButton: document.getElementById("abilityTestButton"),
+  learningDataStats: document.getElementById("learningDataStats"),
+  learningDataTimeline: document.getElementById("learningDataTimeline"),
+  exportDataButton: document.getElementById("exportDataButton"),
   summaryMinutes: document.getElementById("summaryMinutes"),
   summaryTestScore: document.getElementById("summaryTestScore"),
   shareSummaryButton: document.getElementById("shareSummaryButton")
@@ -1117,6 +1527,7 @@ function setView(view) {
     item.classList.toggle("active", item.dataset.nav === view);
   });
   els.app.dataset.view = view;
+  if (view === "progress") renderLearningData();
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
@@ -1189,7 +1600,13 @@ function forbiddenTopicsFor(key) {
     hotel: ["latte", "barista", "platform", "blue line", "meeting blocker", "sore throat"],
     shopping: ["barista", "platform", "blue line", "meeting blocker", "hotel room", "sore throat"],
     taxi: ["latte", "barista", "interview", "meeting blocker", "menu", "bill", "sore throat"],
-    doctor: ["latte", "barista", "platform", "blue line", "meeting blocker", "hotel room", "shopping bag"]
+    doctor: ["latte", "barista", "platform", "blue line", "meeting blocker", "hotel room", "shopping bag"],
+    apartment: ["latte", "barista", "platform", "blue line", "sore throat", "bill", "police"],
+    bank: ["latte", "barista", "platform", "hotel room", "sore throat", "spicy", "lease"],
+    delivery: ["latte", "barista", "meeting blocker", "platform", "passport", "sore throat"],
+    appointment: ["latte", "barista", "platform", "blue line", "deposit", "refund"],
+    emergency: ["latte", "barista", "menu", "bill", "meeting blocker", "reservation"],
+    social: ["bill", "deposit", "refund", "police", "sore throat", "platform"]
   };
   return topics[key] || [];
 }
@@ -1211,7 +1628,11 @@ function isUnclearEnglishInput(text) {
     "menu", "order", "recommend", "bill", "water", "spicy", "mild", "allergy", "reservation",
     "check", "room", "breakfast", "included", "passport", "id", "key", "card", "price",
     "cash", "receipt", "bag", "size", "address", "driver", "traffic", "entrance", "taxi",
-    "doctor", "fever", "cough", "throat", "sore", "medicine", "symptom", "pain", "rest"
+    "doctor", "fever", "cough", "throat", "sore", "medicine", "symptom", "pain", "rest",
+    "rent", "deposit", "utilities", "viewing", "lease", "laundry", "account", "transfer",
+    "fee", "statement", "bank", "return", "refund", "package", "delivery", "order",
+    "appointment", "schedule", "reschedule", "available", "emergency", "lost", "police",
+    "safe", "location", "meet", "friend", "weekend"
   ]);
   const knownCount = words.filter((word) => usefulWords.has(word)).length;
   const hasSentenceShape = /\b(i|you|we|can|could|would|what|where|how|do|does|is|are|please)\b/.test(clean);
@@ -1278,6 +1699,36 @@ function fallbackCoachReply({ text, scenario, scenarioKey, fallbackIndex, lastAi
         reply: "No worries. Try saying: I have a sore throat.",
         replyCn: "没关系。你可以试着说：我喉咙痛。",
         correction: "刚才的输入不像完整英文。可以先用：I have a sore throat."
+      },
+      apartment: {
+        reply: "No worries. Try saying: Are utilities included?",
+        replyCn: "没关系。你可以试着说：水电包含在内吗？",
+        correction: "刚才的输入不像完整英文。可以先用：Are utilities included?"
+      },
+      bank: {
+        reply: "No worries. Try saying: I would like to open an account.",
+        replyCn: "没关系。你可以试着说：我想开一个账户。",
+        correction: "刚才的输入不像完整英文。可以先用：I would like to open an account."
+      },
+      delivery: {
+        reply: "No worries. Try saying: Can I get a refund?",
+        replyCn: "没关系。你可以试着说：可以退款吗？",
+        correction: "刚才的输入不像完整英文。可以先用：Can I get a refund?"
+      },
+      appointment: {
+        reply: "No worries. Try saying: Can I reschedule?",
+        replyCn: "没关系。你可以试着说：我可以改时间吗？",
+        correction: "刚才的输入不像完整英文。可以先用：Can I reschedule?"
+      },
+      emergency: {
+        reply: "No worries. Try saying: I need help.",
+        replyCn: "没关系。你可以试着说：我需要帮助。",
+        correction: "刚才的输入不像完整英文。可以先用：I need help."
+      },
+      social: {
+        reply: "No worries. Try saying: Nice to meet you.",
+        replyCn: "没关系。你可以试着说：很高兴认识你。",
+        correction: "刚才的输入不像完整英文。可以先用：Nice to meet you."
       }
     };
     return repair[scenarioKey] || repair.coffee;
@@ -1472,11 +1923,13 @@ function advanceQuestion() {
   state.level = levelFromScore(state.testScore);
   state.hasOnboarded = true;
   state.lastMethod = learningMethodFor(state.level);
+  recordLearningEvent("ability", { score: state.testScore, total: questions.length, level: state.level });
   buildDailyLesson();
   saveState();
   updateHeader();
   updateLearningMethod();
   renderTasks();
+  renderCourseLibrary();
   renderScenarios();
   renderWordBank();
   renderDailyTest();
@@ -1547,6 +2000,8 @@ function renderTasks() {
 function completeTask(taskId) {
   if (!state.completedTaskIds.includes(taskId)) {
     state.completedTaskIds.push(taskId);
+    const task = taskTemplates.find((item) => item.id === taskId);
+    recordLearningEvent("task", { taskId, taskTitle: task?.title || taskId });
     saveState();
   }
   renderTasks();
@@ -1564,6 +2019,144 @@ function updateProgress() {
     const total = practiceTestTotal();
     els.summaryTestScore.textContent = state.practiceTest?.submitted ? `${state.practiceTest.score}/${total}` : "未测";
   }
+}
+
+function ensureLearningData() {
+  if (!state.learningData || !Array.isArray(state.learningData.events)) {
+    state.learningData = { events: [] };
+  }
+}
+
+function recordLearningEvent(type, detail = {}) {
+  ensureLearningData();
+  state.learningData.events.unshift({
+    id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
+    type,
+    date: localDateKey(),
+    time: new Date().toISOString(),
+    level: state.level,
+    goal: state.goal,
+    ...detail
+  });
+  state.learningData.events = state.learningData.events.slice(0, 160);
+  saveState();
+  renderLearningData();
+}
+
+function eventLabel(event) {
+  const labels = {
+    task: "完成任务",
+    chat: "对话练习",
+    test: "今日小测",
+    review: "复习卡片",
+    ability: "能力测试",
+    course: "打开课程"
+  };
+  return labels[event.type] || "学习记录";
+}
+
+function eventDetail(event) {
+  if (event.type === "test") return `得分 ${event.score}/${event.total}`;
+  if (event.type === "chat") return scenarios[event.scenario]?.label || "场景对话";
+  if (event.type === "review") return event.phrase || "复习表达";
+  if (event.type === "course") return event.title || scenarios[event.scenario]?.label || "生活课程";
+  if (event.taskTitle) return event.taskTitle;
+  return goalLabel(event.goal || state.goal);
+}
+
+function learningStats() {
+  ensureLearningData();
+  const events = state.learningData.events;
+  const days = new Set(events.map((event) => event.date)).size;
+  return {
+    days,
+    tasks: events.filter((event) => event.type === "task").length,
+    chats: events.filter((event) => event.type === "chat").length,
+    tests: events.filter((event) => event.type === "test").length,
+    reviews: events.filter((event) => event.type === "review").length
+  };
+}
+
+function renderLearningData() {
+  if (!els.learningDataStats || !els.learningDataTimeline) return;
+  ensureLearningData();
+  const stats = learningStats();
+  const items = [
+    ["学习天数", stats.days],
+    ["完成任务", stats.tasks],
+    ["对话次数", stats.chats],
+    ["小测次数", stats.tests],
+    ["复习次数", stats.reviews],
+    ["本地记录", state.learningData.events.length]
+  ];
+  els.learningDataStats.innerHTML = items
+    .map(([label, value]) => `<article class="data-stat"><span>${label}</span><strong>${value}</strong></article>`)
+    .join("");
+
+  const recent = state.learningData.events.slice(0, 8);
+  els.learningDataTimeline.innerHTML = recent.length
+    ? recent.map((event) => {
+        const date = new Date(event.time);
+        const time = Number.isNaN(date.getTime()) ? event.date : date.toLocaleString([], { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
+        return `<article class="log-item"><time>${escapeHtml(time)}</time><strong>${escapeHtml(eventLabel(event))}</strong><span>${escapeHtml(eventDetail(event))}</span></article>`;
+      }).join("")
+    : `<article class="log-item"><time>Local DB</time><strong>还没有学习记录</strong><span>完成任务、小测、对话或复习后会自动记录。</span></article>`;
+}
+
+function exportLearningData() {
+  ensureLearningData();
+  const payload = {
+    exportedAt: new Date().toISOString(),
+    user: state.email,
+    level: state.level,
+    goal: state.goal,
+    learningData: state.learningData
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `fluent-loop-learning-data-${localDateKey()}.json`;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+}
+
+function renderCourseLibrary() {
+  if (!els.courseLibraryList) return;
+  const recommended = new Set((dailyLesson?.scenarioKeys || []).slice(0, 5));
+  els.courseCount.textContent = `${lifeCourses.length} 个场景`;
+  els.courseLibraryList.innerHTML = "";
+  lifeCourses.forEach((course) => {
+    const scenario = scenarios[course.scenario];
+    if (!scenario) return;
+    const button = document.createElement("button");
+    button.className = "course-card";
+    button.type = "button";
+    button.innerHTML = `
+      <header>
+        <span class="task-icon">${icon(scenario.icon)}</span>
+        <div>
+          <h3>${escapeHtml(course.title)}</h3>
+          <p>${escapeHtml(course.description)}</p>
+        </div>
+      </header>
+      <div class="phrase-row">
+        ${course.phrases.slice(0, 2).map((phrase) => `<span>${escapeHtml(phrase)}</span>`).join("")}
+        ${recommended.has(course.scenario) ? "<span>今日推荐</span>" : ""}
+      </div>
+    `;
+    button.addEventListener("click", () => {
+      state.activeScenario = course.scenario;
+      saveState();
+      recordLearningEvent("course", { scenario: course.scenario, title: course.title });
+      renderScenarios();
+      resetChat();
+      setView("talk");
+    });
+    els.courseLibraryList.appendChild(button);
+  });
 }
 
 function ensurePracticeTestState() {
@@ -1592,7 +2185,7 @@ function practiceTestTotal() {
 function scoreWritingAnswer(text) {
   const clean = text.trim();
   const words = clean.split(/\s+/).filter(Boolean);
-  const hasUsefulPattern = /\b(could|can|may|would|please|need|have|recommend|reservation|address|card|help|throat|price)\b/i.test(clean);
+  const hasUsefulPattern = /\b(could|can|may|would|please|need|have|recommend|reservation|address|card|help|throat|price|rent|deposit|utilities|account|refund|appointment|reschedule|emergency|lost)\b/i.test(clean);
   const passed = words.length >= 4 && hasUsefulPattern && !isUnclearEnglishInput(clean);
   return {
     passed,
@@ -1672,6 +2265,7 @@ function submitDailyTest() {
   test.score = score;
   test.writingPassed = writingResult.passed;
   test.writingTip = writingResult.tip;
+  recordLearningEvent("test", { score, total: practiceTestTotal(), writingPassed: writingResult.passed });
   saveState();
   completeTask("test");
   renderDailyTest();
@@ -1703,6 +2297,7 @@ function refreshLesson() {
   buildDailyLesson();
   renderQuestion();
   renderTasks();
+  renderCourseLibrary();
   renderScenarios();
   resetChat();
   renderCard();
@@ -1776,6 +2371,7 @@ async function sendMessage() {
   if (!text) return;
   const lastAiMessage = latestAiMessageText();
   addMessage("user", text);
+  recordLearningEvent("chat", { scenario: state.activeScenario, messageLength: text.length });
   els.chatInput.value = "";
   const scenario = scenarios[state.activeScenario];
   const scenarioContext = scenarioContextFor(state.activeScenario);
@@ -1885,6 +2481,8 @@ function renderCard() {
 }
 
 function rateCard() {
+  const card = cards[state.cardIndex];
+  recordLearningEvent("review", { phrase: card?.phrase || "review card" });
   state.cardIndex = (state.cardIndex + 1) % cards.length;
   saveState();
   renderCard();
@@ -1926,6 +2524,7 @@ function bindEvents() {
       saveState();
       updateHeader();
       renderTasks();
+      renderCourseLibrary();
       renderScenarios();
       renderWordBank();
       renderDailyTest();
@@ -1941,6 +2540,7 @@ function bindEvents() {
       saveState();
       updateHeader();
       renderTasks();
+      renderCourseLibrary();
       renderDailyTest();
       updateProgress();
     });
@@ -2006,6 +2606,7 @@ function bindEvents() {
   });
   els.submitDailyTestButton.addEventListener("click", submitDailyTest);
   els.resetDailyTestButton.addEventListener("click", resetDailyTest);
+  els.exportDataButton.addEventListener("click", exportLearningData);
   els.shareSummaryButton.addEventListener("click", shareSummary);
   els.installButton.addEventListener("click", async () => {
     if (!deferredInstallPrompt) return;
@@ -2044,6 +2645,7 @@ function init() {
   buildDailyLesson();
   renderQuestion();
   renderTasks();
+  renderCourseLibrary();
   renderScenarios();
   resetChat();
   renderCard();
