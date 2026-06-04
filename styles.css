@@ -38,7 +38,8 @@ body {
 }
 
 button,
-input {
+input,
+textarea {
   font: inherit;
 }
 
@@ -641,6 +642,121 @@ svg {
 
 .result-box.answer-feedback button {
   margin-top: 4px;
+}
+
+.test-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 16px;
+  align-items: start;
+}
+
+.practice-test-card {
+  max-width: none;
+}
+
+.daily-test-list {
+  display: grid;
+  gap: 12px;
+}
+
+.daily-test-item {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fbfdf9;
+}
+
+.daily-test-item header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.daily-test-item h3 {
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.28;
+}
+
+.daily-test-options {
+  display: grid;
+  gap: 8px;
+}
+
+.writing-prompt {
+  display: grid;
+  gap: 4px;
+  margin: 16px 0 8px;
+}
+
+.writing-prompt span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.writing-prompt strong {
+  font-size: 16px;
+  line-height: 1.35;
+}
+
+#dailyTestWriting {
+  width: 100%;
+  min-height: 100px;
+  resize: vertical;
+  padding: 14px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  color: var(--ink);
+  background: #fff;
+  outline: none;
+  line-height: 1.45;
+}
+
+#dailyTestWriting:focus {
+  border-color: rgba(21, 111, 114, 0.55);
+  box-shadow: 0 0 0 3px rgba(21, 111, 114, 0.12);
+}
+
+.test-side-panel {
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: var(--shadow);
+}
+
+.test-side-panel h3 {
+  margin: 4px 0 8px;
+  font-size: 24px;
+  line-height: 1.1;
+}
+
+.test-side-panel p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.mini-checks {
+  display: grid;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.mini-checks span {
+  padding: 9px 10px;
+  border-radius: 8px;
+  color: var(--teal);
+  background: #edf7f1;
+  font-weight: 850;
 }
 
 .today-grid {
@@ -1363,7 +1479,7 @@ svg {
   left: 50%;
   bottom: 14px;
   z-index: 30;
-  width: min(calc(100% - 28px), 520px);
+  width: min(calc(100% - 28px), 620px);
   transform: translateX(-50%);
   padding: 8px;
   border-radius: 14px;
@@ -1372,7 +1488,7 @@ svg {
   box-shadow: 0 14px 40px rgba(28, 45, 39, 0.14);
   backdrop-filter: blur(18px);
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 6px;
 }
 
@@ -1406,7 +1522,8 @@ svg {
   .onboarding-layout,
   .today-grid,
   .conversation-layout,
-  .progress-grid {
+  .progress-grid,
+  .test-layout {
     grid-template-columns: 1fr;
   }
 

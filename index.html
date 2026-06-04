@@ -9,7 +9,7 @@
   <link rel="manifest" href="./manifest.webmanifest" />
   <link rel="icon" href="./icons/icon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="./icons/icon.svg" />
-  <link rel="stylesheet" href="./styles.css?v=10" />
+  <link rel="stylesheet" href="./styles.css?v=11" />
 </head>
 <body>
   <div id="app" class="app-shell" data-view="welcome">
@@ -234,6 +234,50 @@
         </div>
       </section>
 
+      <section class="view" data-screen="test">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Quick Test</p>
+            <h2>5 分钟小测</h2>
+          </div>
+          <span id="dailyTestScore">未完成</span>
+        </div>
+
+        <div class="test-layout">
+          <article class="test-card practice-test-card">
+            <div class="test-meta">
+              <span>今日场景</span>
+              <span>选择题 + 造句</span>
+            </div>
+            <div class="meter daily-test-meter" aria-hidden="true"><i id="dailyTestMeter"></i></div>
+            <div class="daily-test-list" id="dailyTestList"></div>
+
+            <label class="writing-prompt" for="dailyTestWriting">
+              <span>情景造句</span>
+              <strong>用英文写一句真实需求，比如点餐、问路、付款或求助。</strong>
+            </label>
+            <textarea id="dailyTestWriting" rows="3" placeholder="Example: Could you help me with this?"></textarea>
+
+            <div class="action-row">
+              <button class="primary" id="submitDailyTestButton" type="button">提交小测</button>
+              <button class="secondary" id="resetDailyTestButton" type="button">重做一次</button>
+            </div>
+            <div class="result-box" id="dailyTestResult" hidden></div>
+          </article>
+
+          <aside class="test-side-panel">
+            <p class="eyebrow">Why Test</p>
+            <h3>测完才知道下一步练什么</h3>
+            <p>这个小测会检查你能不能把中文需求换成自然英文。做错的表达会进入复习，之后再回到对话里练。</p>
+            <div class="mini-checks">
+              <span>场景判断</span>
+              <span>礼貌表达</span>
+              <span>真实输出</span>
+            </div>
+          </aside>
+        </div>
+      </section>
+
       <section class="view" data-screen="review">
         <div class="section-heading">
           <div>
@@ -318,7 +362,7 @@
 
         <div class="summary-grid">
           <article class="stat-card"><span>完成时间</span><strong id="summaryMinutes">20m</strong><small>比昨天更稳定。</small></article>
-          <article class="stat-card"><span>新增表达</span><strong>5</strong><small>其中 2 个来自口语。</small></article>
+          <article class="stat-card"><span>今日小测</span><strong id="summaryTestScore">未测</strong><small>测完会给下一步建议。</small></article>
           <article class="stat-card"><span>明日重点</span><strong>追问</strong><small>练会议中请对方解释。</small></article>
         </div>
 
@@ -344,6 +388,10 @@
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15a4 4 0 0 1-4 4H7l-4 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z"/></svg>
         <span>Talk</span>
       </button>
+      <button class="nav-item" data-nav="test">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        <span>Test</span>
+      </button>
       <button class="nav-item" data-nav="review">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19.5V5a2 2 0 0 1 2-2h11.5a1.5 1.5 0 0 1 0 3H6"/><path d="M6 3v18"/><path d="M8 7h8"/></svg>
         <span>Review</span>
@@ -355,6 +403,6 @@
     </nav>
   </div>
 
-  <script src="./app.js?v=10" defer></script>
+  <script src="./app.js?v=11" defer></script>
 </body>
 </html>

@@ -14,7 +14,8 @@ const defaultState = {
   hasOnboarded: false,
   todayKey: "",
   lessonSalt: 0,
-  streak: 6
+  streak: 6,
+  practiceTest: null
 };
 
 const taskTemplates = [
@@ -41,6 +42,12 @@ const taskTemplates = [
     title: "写 3 句话总结",
     description: "用今天的表达写自己的例句",
     icon: "pen"
+  },
+  {
+    id: "test",
+    title: "今日小测",
+    description: "选择题 + 情景造句，马上看对错",
+    icon: "test"
   }
 ];
 
@@ -81,6 +88,11 @@ const taskPools = {
     { title: "写 1 个复盘", description: "记录今天最想记住的 1 个词", icon: "pen" },
     { title: "写 3 个请求句", description: "用 Could I / Could you / I need 写真实需求", icon: "pen" },
     { title: "写 1 个生活任务", description: "模拟今天要在国外完成的一件小事", icon: "pen" }
+  ],
+  test: [
+    { title: "今日小测", description: "选择正确表达，再写 1 句真实英语", icon: "test" },
+    { title: "场景反应测试", description: "餐厅、酒店、打车里的高频句判断", icon: "test" },
+    { title: "5 分钟出口测", description: "测你能不能把中文需求变成英文", icon: "test" }
   ]
 };
 
@@ -307,6 +319,72 @@ const questions = [
       { text: "I arrive after five minute.", correct: false },
       { text: "I go there five minutes later now.", correct: false }
     ]
+  }
+];
+
+const practiceTestBank = [
+  {
+    id: "test-restaurant-recommend",
+    scenario: "restaurant",
+    skill: "餐厅推荐",
+    prompt: "你在餐厅想问“你推荐什么？”，哪句最自然？",
+    correct: "What do you recommend?",
+    options: ["What do you recommend?", "What you recommend?", "Give me good food."],
+    explanation: "What do you recommend? 简单、礼貌，适合餐厅和咖啡店。"
+  },
+  {
+    id: "test-hotel-reservation",
+    scenario: "hotel",
+    skill: "酒店入住",
+    prompt: "你到酒店前台，想说“我有预订”。",
+    correct: "I have a reservation.",
+    options: ["I have a reservation.", "I am reservation.", "I booked me."],
+    explanation: "I have a reservation. 是入住酒店最常用的开场句。"
+  },
+  {
+    id: "test-shopping-price",
+    scenario: "shopping",
+    skill: "购物询价",
+    prompt: "你想问“这个多少钱？”。",
+    correct: "How much is this?",
+    options: ["How much is this?", "How many money?", "What price this?"],
+    explanation: "How much is this? 是购物时最实用的基础句。"
+  },
+  {
+    id: "test-taxi-address",
+    scenario: "taxi",
+    skill: "打车目的地",
+    prompt: "你想让司机带你去这个地址。",
+    correct: "Could you take me to this address?",
+    options: ["Could you take me to this address?", "You go this address.", "Drive me address."],
+    explanation: "Could you take me to this address? 礼貌清楚，适合打车。"
+  },
+  {
+    id: "test-doctor-symptom",
+    scenario: "doctor",
+    skill: "描述症状",
+    prompt: "你看医生时想说“我喉咙痛”。",
+    correct: "I have a sore throat.",
+    options: ["I have a sore throat.", "My throat is bad pain thing.", "I am throat sore."],
+    explanation: "I have a sore throat. 是描述症状的自然表达。"
+  },
+  {
+    id: "test-payment-card",
+    scenario: "shopping",
+    skill: "付款方式",
+    prompt: "你想问“可以刷卡吗？”。",
+    correct: "Can I pay by card?",
+    options: ["Can I pay by card?", "Can I pay card?", "I use card pay?"],
+    explanation: "Can I pay by card? 餐厅、商店、酒店都能用。"
+  },
+  {
+    id: "test-help-clarify",
+    scenario: "travel",
+    skill: "礼貌求助",
+    prompt: "你没有听懂，想请对方再解释一下。",
+    correct: "Could you clarify that?",
+    options: ["Could you clarify that?", "What?", "Say again now."],
+    explanation: "Could you clarify that? 比 What? 更礼貌，也更适合真实交流。"
   }
 ];
 
@@ -825,6 +903,7 @@ const iconPaths = {
   chat: '<path d="M21 15a4 4 0 0 1-4 4H7l-4 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z"/>',
   pen: '<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/>',
   check: '<path d="m20 6-11 11-5-5"/>',
+  test: '<path d="M9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>',
   arrow: '<path d="M5 12h14"/><path d="m13 6 6 6-6 6"/>',
   coffee: '<path d="M10 2v2"/><path d="M14 2v2"/><path d="M16 8h1a4 4 0 0 1 0 8h-1"/><path d="M4 8h12v6a6 6 0 0 1-12 0Z"/><path d="M6 20h10"/>',
   briefcase: '<path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><path d="M4 7h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2Z"/>',
@@ -863,6 +942,13 @@ const els = {
   todayProgress: document.getElementById("todayProgress"),
   taskList: document.getElementById("taskList"),
   openSummaryButton: document.getElementById("openSummaryButton"),
+  dailyTestScore: document.getElementById("dailyTestScore"),
+  dailyTestMeter: document.getElementById("dailyTestMeter"),
+  dailyTestList: document.getElementById("dailyTestList"),
+  dailyTestWriting: document.getElementById("dailyTestWriting"),
+  submitDailyTestButton: document.getElementById("submitDailyTestButton"),
+  resetDailyTestButton: document.getElementById("resetDailyTestButton"),
+  dailyTestResult: document.getElementById("dailyTestResult"),
   conversationLevel: document.getElementById("conversationLevel"),
   translationToggle: document.getElementById("translationToggle"),
   scenarioRow: document.getElementById("scenarioRow"),
@@ -888,6 +974,7 @@ const els = {
   methodRecommendation: document.getElementById("methodRecommendation"),
   abilityTestButton: document.getElementById("abilityTestButton"),
   summaryMinutes: document.getElementById("summaryMinutes"),
+  summaryTestScore: document.getElementById("summaryTestScore"),
   shareSummaryButton: document.getElementById("shareSummaryButton")
 };
 
@@ -900,6 +987,7 @@ let voiceTimer = null;
 let recognition = null;
 let dailyLesson = null;
 let dailyWordItems = [];
+let dailyTestItems = [];
 
 function loadState() {
   try {
@@ -981,12 +1069,16 @@ function buildDailyLesson() {
 
   const profile = dailyProfiles[state.goal] || dailyProfiles["daily-speaking"];
   const seed = `${state.todayKey}|${state.goal}|${state.level}|${state.minutes}|${state.lessonSalt || 0}`;
+  if (state.practiceTest?.seed && state.practiceTest.seed !== seed) {
+    state.practiceTest = null;
+    state.completedTaskIds = state.completedTaskIds.filter((id) => id !== "test");
+  }
   const scenarioKeys = shuffled(profile.scenarios, `${seed}|scenarios`);
   if (!scenarioKeys.includes(state.activeScenario)) {
     state.activeScenario = scenarioKeys[0];
   }
 
-  const taskTypes = ["review", "listening", "conversation", "writing"];
+  const taskTypes = ["review", "listening", "conversation", "writing", "test"];
   const nextTasks = taskTypes.map((type) => {
     const pool = taskPools[type];
     const picked = pickItem(pool, `${seed}|task|${type}`);
@@ -1004,6 +1096,7 @@ function buildDailyLesson() {
     ...pickItems(questionBank, 5, `${seed}|questions`).map((question) => cloneQuestion(question, seed))
   );
   dailyWordItems = pickItems(highFrequencyWords, 6, `${seed}|words`).sort((a, b) => a.rank - b.rank);
+  dailyTestItems = pickItems(practiceTestBank, 3, `${seed}|practice-test`);
   dailyLesson = {
     seed,
     scenarioKeys,
@@ -1386,6 +1479,7 @@ function advanceQuestion() {
   renderTasks();
   renderScenarios();
   renderWordBank();
+  renderDailyTest();
   els.optionList.innerHTML = "";
   els.questionText.textContent = "测试完成。";
   els.questionCounter.textContent = `${questions.length} / ${questions.length}`;
@@ -1428,6 +1522,11 @@ function renderTasks() {
       </button>
     `;
     article.querySelector("button").addEventListener("click", () => {
+      if (task.id === "test") {
+        renderDailyTest();
+        setView("test");
+        return;
+      }
       if (task.id === "conversation" && !done) {
         if (task.scenario && scenarios[task.scenario]) {
           state.activeScenario = task.scenario;
@@ -1461,6 +1560,138 @@ function updateProgress() {
   els.streakValue.textContent = `${state.streak} 天`;
   els.openSummaryButton.hidden = completed < taskTemplates.length;
   els.summaryMinutes.textContent = `${state.minutes}m`;
+  if (els.summaryTestScore) {
+    const total = practiceTestTotal();
+    els.summaryTestScore.textContent = state.practiceTest?.submitted ? `${state.practiceTest.score}/${total}` : "未测";
+  }
+}
+
+function ensurePracticeTestState() {
+  const seed = dailyLesson?.seed || localDateKey();
+  if (!state.practiceTest || state.practiceTest.seed !== seed) {
+    if (state.practiceTest?.seed && state.practiceTest.seed !== seed) {
+      state.completedTaskIds = state.completedTaskIds.filter((id) => id !== "test");
+    }
+    state.practiceTest = {
+      seed,
+      answers: {},
+      writing: "",
+      submitted: false,
+      score: 0,
+      writingPassed: false,
+      writingTip: ""
+    };
+  }
+  if (!state.practiceTest.answers) state.practiceTest.answers = {};
+}
+
+function practiceTestTotal() {
+  return dailyTestItems.length + 1;
+}
+
+function scoreWritingAnswer(text) {
+  const clean = text.trim();
+  const words = clean.split(/\s+/).filter(Boolean);
+  const hasUsefulPattern = /\b(could|can|may|would|please|need|have|recommend|reservation|address|card|help|throat|price)\b/i.test(clean);
+  const passed = words.length >= 4 && hasUsefulPattern && !isUnclearEnglishInput(clean);
+  return {
+    passed,
+    tip: passed
+      ? "造句通过：这句已经能表达清楚真实需求。"
+      : "造句还不够清楚。可以先写：Could you help me with this?"
+  };
+}
+
+function renderDailyTest() {
+  if (!els.dailyTestList) return;
+  ensurePracticeTestState();
+  const test = state.practiceTest;
+  const total = practiceTestTotal();
+  const answeredCount = dailyTestItems.filter((item) => test.answers[item.id]).length + (test.writing.trim() ? 1 : 0);
+  const progressValue = test.submitted ? (test.score / total) * 100 : (answeredCount / total) * 100;
+
+  els.dailyTestScore.textContent = test.submitted ? `${test.score} / ${total}` : `${answeredCount} / ${total}`;
+  els.dailyTestMeter.style.setProperty("--value", `${Math.round(progressValue)}%`);
+  els.dailyTestWriting.value = test.writing;
+  els.dailyTestWriting.disabled = test.submitted;
+  els.submitDailyTestButton.disabled = test.submitted;
+  els.submitDailyTestButton.textContent = test.submitted ? "已提交" : "提交小测";
+  els.dailyTestList.innerHTML = "";
+
+  dailyTestItems.forEach((item, index) => {
+    const article = document.createElement("article");
+    article.className = "daily-test-item";
+    const selected = test.answers[item.id] || "";
+    const options = shuffled(item.options, `${dailyLesson?.seed || ""}|${item.id}`);
+    article.innerHTML = `
+      <header>
+        <span>${index + 1}. ${escapeHtml(item.skill)}</span>
+        <span>${escapeHtml(scenarios[item.scenario]?.label || "场景")}</span>
+      </header>
+      <h3>${escapeHtml(item.prompt)}</h3>
+      <div class="daily-test-options"></div>
+      ${test.submitted ? `<div class="result-box answer-feedback ${selected === item.correct ? "correct" : "wrong"}"><strong>${selected === item.correct ? "回答正确" : "需要复习"}</strong><p>正确答案：${escapeHtml(item.correct)}</p><p>${escapeHtml(item.explanation)}</p></div>` : ""}
+    `;
+    const optionWrap = article.querySelector(".daily-test-options");
+    options.forEach((optionText) => {
+      const button = document.createElement("button");
+      const isSelected = selected === optionText;
+      const isCorrect = optionText === item.correct;
+      button.className = `option-card${isSelected ? " selected" : ""}${test.submitted && isCorrect ? " correct" : ""}${test.submitted && isSelected && !isCorrect ? " wrong" : ""}`;
+      button.innerHTML = `<strong>${escapeHtml(optionText)}</strong><span>${test.submitted ? (isCorrect ? "正确答案" : isSelected ? "你的选择" : "未选择") : "点击选择"}</span>`;
+      button.disabled = test.submitted;
+      button.addEventListener("click", () => {
+        test.answers[item.id] = optionText;
+        saveState();
+        renderDailyTest();
+      });
+      optionWrap.appendChild(button);
+    });
+    els.dailyTestList.appendChild(article);
+  });
+
+  if (test.submitted) {
+    const missed = dailyTestItems.filter((item) => test.answers[item.id] !== item.correct).map((item) => item.skill);
+    const nextStep = missed.length ? `建议回到 Talk 里重点练：${missed.slice(0, 2).join(" / ")}。` : "选择题很稳，下一步多练开口造句。";
+    els.dailyTestResult.hidden = false;
+    els.dailyTestResult.className = `result-box answer-feedback ${test.score >= total - 1 ? "correct" : "wrong"}`;
+    els.dailyTestResult.innerHTML = `<strong>小测得分：${test.score} / ${total}</strong><p>${escapeHtml(nextStep)}</p><p>${escapeHtml(test.writingTip)}</p>`;
+  } else {
+    els.dailyTestResult.hidden = true;
+  }
+}
+
+function submitDailyTest() {
+  ensurePracticeTestState();
+  const test = state.practiceTest;
+  test.writing = els.dailyTestWriting.value.trim();
+  let score = dailyTestItems.filter((item) => test.answers[item.id] === item.correct).length;
+  const writingResult = scoreWritingAnswer(test.writing);
+  if (writingResult.passed) score += 1;
+  test.submitted = true;
+  test.score = score;
+  test.writingPassed = writingResult.passed;
+  test.writingTip = writingResult.tip;
+  saveState();
+  completeTask("test");
+  renderDailyTest();
+}
+
+function resetDailyTest() {
+  ensurePracticeTestState();
+  state.practiceTest = {
+    seed: dailyLesson?.seed || localDateKey(),
+    answers: {},
+    writing: "",
+    submitted: false,
+    score: 0,
+    writingPassed: false,
+    writingTip: ""
+  };
+  state.completedTaskIds = state.completedTaskIds.filter((id) => id !== "test");
+  saveState();
+  renderDailyTest();
+  renderTasks();
 }
 
 function refreshLesson() {
@@ -1476,6 +1707,7 @@ function refreshLesson() {
   resetChat();
   renderCard();
   renderWordBank();
+  renderDailyTest();
   updateHeader();
   updateProgress();
 }
@@ -1696,6 +1928,7 @@ function bindEvents() {
       renderTasks();
       renderScenarios();
       renderWordBank();
+      renderDailyTest();
     });
   });
 
@@ -1708,6 +1941,7 @@ function bindEvents() {
       saveState();
       updateHeader();
       renderTasks();
+      renderDailyTest();
       updateProgress();
     });
   });
@@ -1761,6 +1995,17 @@ function bindEvents() {
   document.querySelectorAll("[data-rate]").forEach((button) => {
     button.addEventListener("click", rateCard);
   });
+  els.dailyTestWriting.addEventListener("input", () => {
+    ensurePracticeTestState();
+    state.practiceTest.writing = els.dailyTestWriting.value;
+    saveState();
+    const total = practiceTestTotal();
+    const answeredCount = dailyTestItems.filter((item) => state.practiceTest.answers[item.id]).length + (state.practiceTest.writing.trim() ? 1 : 0);
+    els.dailyTestScore.textContent = `${answeredCount} / ${total}`;
+    els.dailyTestMeter.style.setProperty("--value", `${Math.round((answeredCount / total) * 100)}%`);
+  });
+  els.submitDailyTestButton.addEventListener("click", submitDailyTest);
+  els.resetDailyTestButton.addEventListener("click", resetDailyTest);
   els.shareSummaryButton.addEventListener("click", shareSummary);
   els.installButton.addEventListener("click", async () => {
     if (!deferredInstallPrompt) return;
@@ -1803,6 +2048,7 @@ function init() {
   resetChat();
   renderCard();
   renderWordBank();
+  renderDailyTest();
   checkAiStatus();
   personalizeWordBank();
   updateHeader();
