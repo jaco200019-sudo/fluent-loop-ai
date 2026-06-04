@@ -9,7 +9,7 @@
   <link rel="manifest" href="./manifest.webmanifest" />
   <link rel="icon" href="./icons/icon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="./icons/icon.svg" />
-  <link rel="stylesheet" href="./styles.css?v=12" />
+  <link rel="stylesheet" href="./styles.css?v=13" />
 </head>
 <body>
   <div id="app" class="app-shell" data-view="welcome">
@@ -162,6 +162,21 @@
               <small>完成后会生成总结。</small>
             </article>
           </div>
+        </div>
+
+        <div class="fun-panel">
+          <div>
+            <p class="eyebrow">Daily Challenge</p>
+            <h2 id="funChallengeTitle">今日趣味挑战</h2>
+            <p id="funChallengeCopy">用一句英文完成今天的小任务。</p>
+            <div class="xp-line">
+              <span id="funLevel">Level 1</span>
+              <i aria-hidden="true"><b id="funXpBar"></b></i>
+              <strong id="funXpValue">0 XP</strong>
+            </div>
+          </div>
+          <div class="badge-strip" id="badgeStrip"></div>
+          <button class="secondary" id="startChallengeButton" type="button">开始挑战</button>
         </div>
 
         <div class="section-heading compact">
@@ -362,6 +377,17 @@
           <button class="primary" id="abilityTestButton">重新测试能力</button>
         </div>
 
+        <div class="achievement-panel">
+          <div class="section-heading compact">
+            <div>
+              <p class="eyebrow">Achievements</p>
+              <h2>成就徽章</h2>
+            </div>
+            <span id="achievementCount">0 / 6</span>
+          </div>
+          <div class="achievement-list" id="achievementList"></div>
+        </div>
+
         <div class="data-panel">
           <div class="section-heading compact">
             <div>
@@ -425,6 +451,8 @@
     </nav>
   </div>
 
-  <script src="./app.js?v=12" defer></script>
+  <div class="xp-toast" id="xpToast" aria-live="polite"></div>
+
+  <script src="./app.js?v=13" defer></script>
 </body>
 </html>

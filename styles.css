@@ -766,6 +766,134 @@ svg {
   margin-bottom: 16px;
 }
 
+.fun-panel {
+  margin-bottom: 16px;
+  padding: 16px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(180px, 280px) auto;
+  gap: 14px;
+  align-items: center;
+  border: 1px solid rgba(21, 111, 114, 0.18);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(167, 223, 191, 0.28), rgba(244, 200, 103, 0.24)),
+    #fff;
+  box-shadow: 0 14px 34px rgba(28, 45, 39, 0.1);
+}
+
+.fun-panel h2 {
+  margin: 0;
+  font-size: 22px;
+  line-height: 1.18;
+}
+
+.fun-panel p:not(.eyebrow) {
+  margin: 6px 0 0;
+  color: var(--muted);
+  line-height: 1.42;
+}
+
+.xp-line {
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: auto minmax(90px, 1fr) auto;
+  gap: 8px;
+  align-items: center;
+  color: var(--teal);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.xp-line i {
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(21, 111, 114, 0.13);
+  overflow: hidden;
+}
+
+.xp-line b {
+  display: block;
+  height: 100%;
+  width: var(--value, 0%);
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--teal), var(--gold));
+}
+
+.badge-strip,
+.achievement-list {
+  display: grid;
+  gap: 8px;
+}
+
+.badge-strip {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.badge-pill,
+.achievement-card {
+  border-radius: 8px;
+  border: 1px solid #dfebe3;
+  background: rgba(255, 255, 255, 0.76);
+}
+
+.badge-pill {
+  min-height: 58px;
+  padding: 8px;
+  display: grid;
+  align-content: center;
+  gap: 3px;
+}
+
+.badge-pill strong,
+.achievement-card strong {
+  font-size: 13px;
+  line-height: 1.18;
+}
+
+.badge-pill span,
+.achievement-card span {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.25;
+}
+
+.achievement-panel {
+  margin-top: 14px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: var(--shadow);
+}
+
+.achievement-list {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.achievement-card {
+  min-height: 104px;
+  padding: 12px;
+  display: grid;
+  align-content: space-between;
+  gap: 10px;
+}
+
+.achievement-card.locked {
+  opacity: 0.55;
+  filter: grayscale(0.3);
+}
+
+.achievement-card em {
+  justify-self: start;
+  padding: 4px 7px;
+  border-radius: 999px;
+  color: var(--teal);
+  background: #edf7f1;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 900;
+}
+
 .today-hero {
   min-height: 250px;
   display: flex;
@@ -1589,6 +1717,57 @@ svg {
   font-size: 12px;
 }
 
+.xp-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 86px;
+  z-index: 60;
+  transform: translate(-50%, 16px);
+  min-width: 126px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  color: #fff;
+  background: var(--teal);
+  box-shadow: 0 16px 38px rgba(21, 111, 114, 0.26);
+  text-align: center;
+  font-weight: 950;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.xp-toast.show {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.confetti {
+  position: fixed;
+  inset: 0;
+  z-index: 55;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.confetti i {
+  position: absolute;
+  top: -14px;
+  left: var(--x);
+  width: 7px;
+  height: 12px;
+  border-radius: 2px;
+  background: var(--c);
+  transform: rotate(var(--r));
+  animation: confetti-fall 900ms ease-out forwards;
+}
+
+@keyframes confetti-fall {
+  to {
+    transform: translateY(110vh) rotate(calc(var(--r) + 240deg));
+    opacity: 0;
+  }
+}
+
 .summary-hero {
   min-height: 260px;
   display: flex;
@@ -1664,6 +1843,10 @@ svg {
     grid-template-columns: 1fr;
   }
 
+  .fun-panel {
+    grid-template-columns: 1fr;
+  }
+
   .hero-panel {
     min-height: 280px;
   }
@@ -1674,6 +1857,7 @@ svg {
   .word-bank,
   .course-library,
   .data-stat-grid,
+  .achievement-list,
   .summary-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -1730,8 +1914,13 @@ svg {
   .word-bank,
   .course-library,
   .data-stat-grid,
+  .achievement-list,
   .summary-grid,
   .review-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .badge-strip {
     grid-template-columns: 1fr;
   }
 

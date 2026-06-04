@@ -392,6 +392,54 @@ const lifeCourses = [
   }
 ];
 
+const funChallenges = [
+  {
+    scenario: "restaurant",
+    title: "不说 I want 挑战",
+    copy: "去餐厅点一道菜，只能用 Could I / Can I 开头。",
+    target: "Could I have the chicken rice?"
+  },
+  {
+    scenario: "taxi",
+    title: "目的地挑战",
+    copy: "用一句英文告诉司机你要去哪里，并确认要多久。",
+    target: "Could you take me to this address?"
+  },
+  {
+    scenario: "hotel",
+    title: "入住挑战",
+    copy: "假装你到了酒店前台，用英文完成入住开场。",
+    target: "I have a reservation."
+  },
+  {
+    scenario: "appointment",
+    title: "改期挑战",
+    copy: "打电话把预约改到明天或周五。",
+    target: "Can I reschedule?"
+  },
+  {
+    scenario: "social",
+    title: "认识新朋友挑战",
+    copy: "用英文打招呼，再问对方一个轻松的问题。",
+    target: "Nice to meet you. What do you do?"
+  },
+  {
+    scenario: "emergency",
+    title: "紧急求助挑战",
+    copy: "用最短英文说清楚你需要帮助和你的位置。",
+    target: "I need help. I am near the station."
+  }
+];
+
+const badgeRules = [
+  { id: "first-task", title: "开口第一步", detail: "完成 1 个任务", test: (stats) => stats.tasks >= 1 },
+  { id: "chat-spark", title: "敢说星火", detail: "完成 3 次对话", test: (stats) => stats.chats >= 3 },
+  { id: "test-finisher", title: "小测完成者", detail: "完成 1 次小测", test: (stats) => stats.tests >= 1 },
+  { id: "review-loop", title: "复习循环", detail: "复习 5 张卡", test: (stats) => stats.reviews >= 5 },
+  { id: "life-explorer", title: "生活探索家", detail: "打开 5 个生活课程", test: (stats) => stats.courses >= 5 },
+  { id: "steady-week", title: "稳定学习者", detail: "留下 7 天记录", test: (stats) => stats.days >= 7 }
+];
+
 const questions = [
   {
     skill: "口语表达",
@@ -1346,6 +1394,13 @@ const els = {
   minutesLeft: document.getElementById("minutesLeft"),
   todayProgress: document.getElementById("todayProgress"),
   taskList: document.getElementById("taskList"),
+  funChallengeTitle: document.getElementById("funChallengeTitle"),
+  funChallengeCopy: document.getElementById("funChallengeCopy"),
+  funLevel: document.getElementById("funLevel"),
+  funXpBar: document.getElementById("funXpBar"),
+  funXpValue: document.getElementById("funXpValue"),
+  badgeStrip: document.getElementById("badgeStrip"),
+  startChallengeButton: document.getElementById("startChallengeButton"),
   courseCount: document.getElementById("courseCount"),
   courseLibraryList: document.getElementById("courseLibraryList"),
   openSummaryButton: document.getElementById("openSummaryButton"),
@@ -1383,9 +1438,12 @@ const els = {
   learningDataStats: document.getElementById("learningDataStats"),
   learningDataTimeline: document.getElementById("learningDataTimeline"),
   exportDataButton: document.getElementById("exportDataButton"),
+  achievementCount: document.getElementById("achievementCount"),
+  achievementList: document.getElementById("achievementList"),
   summaryMinutes: document.getElementById("summaryMinutes"),
   summaryTestScore: document.getElementById("summaryTestScore"),
-  shareSummaryButton: document.getElementById("shareSummaryButton")
+  shareSummaryButton: document.getElementById("shareSummaryButton"),
+  xpToast: document.getElementById("xpToast")
 };
 
 let state = loadState();
@@ -1930,6 +1988,7 @@ function advanceQuestion() {
   updateLearningMethod();
   renderTasks();
   renderCourseLibrary();
+  renderFun();
   renderScenarios();
   renderWordBank();
   renderDailyTest();
@@ -2002,6 +2061,7 @@ function completeTask(taskId) {
     state.completedTaskIds.push(taskId);
     const task = taskTemplates.find((item) => item.id === taskId);
     recordLearningEvent("task", { taskId, taskTitle: task?.title || taskId });
+    celebrate();
     saveState();
   }
   renderTasks();
@@ -2029,7 +2089,7 @@ function ensureLearningData() {
 
 function recordLearningEvent(type, detail = {}) {
   ensureLearningData();
-  state.learningData.events.unshift({
+  const event = {
     id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
     type,
     date: localDateKey(),
@@ -2037,10 +2097,16 @@ function recordLearningEvent(type, detail = {}) {
     level: state.level,
     goal: state.goal,
     ...detail
-  });
+  };
+  state.learningData.events.unshift(event);
   state.learningData.events = state.learningData.events.slice(0, 160);
   saveState();
   renderLearningData();
+  renderFun();
+  if (type !== "chat" && !detail.silent) {
+    showXpToast(xpForEvent(event));
+  }
+  return event;
 }
 
 function eventLabel(event) {
@@ -2050,7 +2116,8 @@ function eventLabel(event) {
     test: "今日小测",
     review: "复习卡片",
     ability: "能力测试",
-    course: "打开课程"
+    course: "打开课程",
+    challenge: "趣味挑战"
   };
   return labels[event.type] || "学习记录";
 }
@@ -2059,9 +2126,36 @@ function eventDetail(event) {
   if (event.type === "test") return `得分 ${event.score}/${event.total}`;
   if (event.type === "chat") return scenarios[event.scenario]?.label || "场景对话";
   if (event.type === "review") return event.phrase || "复习表达";
+  if (event.type === "challenge") return event.title || "今日挑战";
   if (event.type === "course") return event.title || scenarios[event.scenario]?.label || "生活课程";
   if (event.taskTitle) return event.taskTitle;
   return goalLabel(event.goal || state.goal);
+}
+
+function xpForEvent(event) {
+  const scores = {
+    task: 10,
+    chat: 5,
+    review: 4,
+    ability: 12,
+    course: 3,
+    challenge: 8
+  };
+  if (event.type === "test") return 10 + Number(event.score || 0) * 5;
+  return scores[event.type] || 2;
+}
+
+function totalXp() {
+  ensureLearningData();
+  return state.learningData.events.reduce((sum, event) => sum + xpForEvent(event), 0);
+}
+
+function xpLevelInfo() {
+  const xp = totalXp();
+  const levelSize = 120;
+  const level = Math.floor(xp / levelSize) + 1;
+  const progress = xp % levelSize;
+  return { xp, level, progress, levelSize };
 }
 
 function learningStats() {
@@ -2073,8 +2167,74 @@ function learningStats() {
     tasks: events.filter((event) => event.type === "task").length,
     chats: events.filter((event) => event.type === "chat").length,
     tests: events.filter((event) => event.type === "test").length,
-    reviews: events.filter((event) => event.type === "review").length
+    reviews: events.filter((event) => event.type === "review").length,
+    courses: events.filter((event) => event.type === "course").length,
+    challenges: events.filter((event) => event.type === "challenge").length
   };
+}
+
+function earnedBadges() {
+  const stats = learningStats();
+  return badgeRules.map((badge) => ({ ...badge, earned: badge.test(stats) }));
+}
+
+function currentFunChallenge() {
+  return pickItem(funChallenges, `${dailyLesson?.seed || localDateKey()}|fun-challenge`);
+}
+
+function renderFun() {
+  if (!els.funChallengeTitle || !els.badgeStrip) return;
+  const challenge = currentFunChallenge();
+  const xpInfo = xpLevelInfo();
+  const badges = earnedBadges();
+  const earned = badges.filter((badge) => badge.earned);
+  els.funChallengeTitle.textContent = challenge.title;
+  els.funChallengeCopy.textContent = `${challenge.copy} 目标句：${challenge.target}`;
+  els.funLevel.textContent = `Level ${xpInfo.level}`;
+  els.funXpValue.textContent = `${xpInfo.xp} XP`;
+  els.funXpBar.style.setProperty("--value", `${Math.round((xpInfo.progress / xpInfo.levelSize) * 100)}%`);
+  els.badgeStrip.innerHTML = (earned.length ? earned.slice(0, 3) : badges.slice(0, 3))
+    .map((badge) => `<article class="badge-pill"><strong>${escapeHtml(badge.earned ? badge.title : "待解锁")}</strong><span>${escapeHtml(badge.detail)}</span></article>`)
+    .join("");
+
+  if (els.achievementList) {
+    els.achievementCount.textContent = `${earned.length} / ${badges.length}`;
+    els.achievementList.innerHTML = badges
+      .map((badge) => `<article class="achievement-card${badge.earned ? "" : " locked"}"><strong>${escapeHtml(badge.title)}</strong><span>${escapeHtml(badge.detail)}</span><em>${badge.earned ? "已解锁" : "未解锁"}</em></article>`)
+      .join("");
+  }
+}
+
+function startFunChallenge() {
+  const challenge = currentFunChallenge();
+  state.activeScenario = challenge.scenario;
+  saveState();
+  recordLearningEvent("challenge", { scenario: challenge.scenario, title: challenge.title });
+  renderScenarios();
+  resetChat();
+  setView("talk");
+}
+
+function showXpToast(xp) {
+  if (!els.xpToast || !xp) return;
+  els.xpToast.textContent = `+${xp} XP`;
+  els.xpToast.classList.add("show");
+  window.clearTimeout(showXpToast.timer);
+  showXpToast.timer = window.setTimeout(() => els.xpToast.classList.remove("show"), 1300);
+}
+
+function celebrate() {
+  const confetti = document.createElement("div");
+  confetti.className = "confetti";
+  const colors = ["#156f72", "#f4c867", "#ef7b63", "#4d7fd6", "#a7dfbf"];
+  confetti.innerHTML = Array.from({ length: 24 }, (_, index) => {
+    const x = Math.round((index / 24) * 100 + Math.random() * 4);
+    const color = colors[index % colors.length];
+    const rotation = Math.round(Math.random() * 180);
+    return `<i style="--x:${x}%;--c:${color};--r:${rotation}deg"></i>`;
+  }).join("");
+  document.body.appendChild(confetti);
+  window.setTimeout(() => confetti.remove(), 1000);
 }
 
 function renderLearningData() {
@@ -2082,11 +2242,13 @@ function renderLearningData() {
   ensureLearningData();
   const stats = learningStats();
   const items = [
+    ["总 XP", totalXp()],
     ["学习天数", stats.days],
     ["完成任务", stats.tasks],
     ["对话次数", stats.chats],
     ["小测次数", stats.tests],
     ["复习次数", stats.reviews],
+    ["挑战次数", stats.challenges],
     ["本地记录", state.learningData.events.length]
   ];
   els.learningDataStats.innerHTML = items
@@ -2298,6 +2460,7 @@ function refreshLesson() {
   renderQuestion();
   renderTasks();
   renderCourseLibrary();
+  renderFun();
   renderScenarios();
   resetChat();
   renderCard();
@@ -2525,6 +2688,7 @@ function bindEvents() {
       updateHeader();
       renderTasks();
       renderCourseLibrary();
+      renderFun();
       renderScenarios();
       renderWordBank();
       renderDailyTest();
@@ -2541,6 +2705,7 @@ function bindEvents() {
       updateHeader();
       renderTasks();
       renderCourseLibrary();
+      renderFun();
       renderDailyTest();
       updateProgress();
     });
@@ -2578,6 +2743,7 @@ function bindEvents() {
 
   els.openSummaryButton.addEventListener("click", () => setView("summary"));
   els.refreshLessonButton.addEventListener("click", refreshLesson);
+  els.startChallengeButton.addEventListener("click", startFunChallenge);
   els.sendButton.addEventListener("click", sendMessage);
   els.chatInput.addEventListener("keydown", (event) => {
     if (event.key === "Enter") sendMessage();
@@ -2646,6 +2812,7 @@ function init() {
   renderQuestion();
   renderTasks();
   renderCourseLibrary();
+  renderFun();
   renderScenarios();
   resetChat();
   renderCard();
