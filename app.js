@@ -724,6 +724,34 @@ function translationFor(text) {
   return exact[text] || "";
 }
 
+function scenarioContextFor(key) {
+  const scenario = scenarios[key] || scenarios.coffee;
+  return {
+    id: key,
+    label: scenario.label,
+    role: scenario.name,
+    learnerTask: scenario.hint,
+    openingLine: scenario.start,
+    suggestedPhrases: scenario.suggestions,
+    forbiddenTopics: forbiddenTopicsFor(key)
+  };
+}
+
+function forbiddenTopicsFor(key) {
+  const topics = {
+    coffee: ["airport", "station", "train", "platform", "blue line", "hotel", "driver", "interview", "recruiter", "meeting", "blocker"],
+    travel: ["latte", "oat milk", "barista", "interview", "recruiter", "meeting blocker"],
+    interview: ["latte", "oat milk", "platform", "blue line", "train station"],
+    meeting: ["latte", "oat milk", "airport platform", "barista"]
+  };
+  return topics[key] || [];
+}
+
+function isOffScenarioReply(reply, key) {
+  const text = String(reply || "").toLowerCase();
+  return forbiddenTopicsFor(key).some((topic) => text.includes(topic.toLowerCase()));
+}
+
 function applyChineseMode() {
   els.app.classList.toggle("show-cn", state.showChinese);
   els.translationToggle.classList.toggle("active", state.showChinese);
@@ -1055,6 +1083,7 @@ async function sendMessage() {
   addMessage("user", text);
   els.chatInput.value = "";
   const scenario = scenarios[state.activeScenario];
+  const scenarioContext = scenarioContextFor(state.activeScenario);
   const fallbackIndex = (replyIndex + (dailyLesson?.replyOffset || 0)) % scenario.replies.length;
   const reply = scenario.replies[fallbackIndex];
   const replyCn = scenario.repliesCn?.[fallbackIndex] || "";
@@ -1066,6 +1095,7 @@ async function sendMessage() {
     level: state.level,
     goal: state.goal,
     scenario: state.activeScenario,
+    scenarioContext,
     userMessage: text,
     showChinese: state.showChinese,
     replyIndex,
@@ -1073,15 +1103,16 @@ async function sendMessage() {
   });
   setVoiceState("idle", "点击麦克风开始说英语。测试版会在不支持录音时模拟识别结果。");
 
-  const finalReply = ai?.reply || reply;
-  const finalReplyCn = ai?.replyCn || replyCn;
+  const aiReplyIsUsable = ai?.reply && !isOffScenarioReply(ai.reply, state.activeScenario);
+  const finalReply = aiReplyIsUsable ? ai.reply : reply;
+  const finalReplyCn = aiReplyIsUsable ? ai.replyCn : replyCn;
   addMessage("ai", finalReply, finalReplyCn);
 
-  if (ai?.correction) {
+  if (aiReplyIsUsable && ai?.correction) {
     els.feedbackCorrection.textContent = ai.correction;
   }
 
-  if (replyIndex >= 2 || ai?.correction) {
+  if (replyIndex >= 2 || (aiReplyIsUsable && ai?.correction)) {
     els.feedbackCard.hidden = false;
     completeTask("conversation");
   }
