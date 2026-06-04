@@ -1,9 +1,9 @@
-const CACHE_NAME = "fluent-loop-pwa-v8";
+const CACHE_NAME = "fluent-loop-pwa-v10";
 const APP_SHELL = [
   "./",
   "./index.html",
-  "./styles.css?v=8",
-  "./app.js?v=8",
+  "./styles.css?v=10",
+  "./app.js?v=10",
   "./manifest.webmanifest",
   "./icons/icon.svg"
 ];

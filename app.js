@@ -49,46 +49,59 @@ const taskPools = {
     { title: "复习 3 个表达", description: "supposed to / clarify / depends on", icon: "book" },
     { title: "复习礼貌请求", description: "Could I get / Can I have / Would it be possible", icon: "book" },
     { title: "复习追问句", description: "Could you clarify / What do you mean by / Could you repeat", icon: "book" },
-    { title: "复习高频动词", description: "get / need / help / make / take", icon: "book" }
+    { title: "复习高频动词", description: "get / need / help / make / take", icon: "book" },
+    { title: "复习餐厅表达", description: "menu / order / bill / recommend", icon: "book" },
+    { title: "复习酒店表达", description: "reservation / check in / room / key card", icon: "book" },
+    { title: "复习求助表达", description: "Could you help / I am looking for / I feel", icon: "book" }
   ],
   listening: [
     { title: "听力 4 分钟", description: "咖啡店里的自然寒暄", icon: "audio" },
     { title: "听力 5 分钟", description: "机场、酒店、车站里的短问答", icon: "audio" },
     { title: "听力 6 分钟", description: "会议开头的 update 和 blocker", icon: "audio" },
-    { title: "听力 4 分钟", description: "面试里的 tell me about yourself", icon: "audio" }
+    { title: "听力 4 分钟", description: "面试里的 tell me about yourself", icon: "audio" },
+    { title: "听力 5 分钟", description: "餐厅点餐和买单", icon: "audio" },
+    { title: "听力 4 分钟", description: "打车确认目的地和价格", icon: "audio" },
+    { title: "听力 6 分钟", description: "医生问症状和过敏史", icon: "audio" }
   ],
   conversation: [
     { title: "AI 场景对话", description: "点咖啡，要求换成燕麦奶", icon: "chat", scenario: "coffee" },
     { title: "AI 场景对话", description: "旅行问路，确认站台和时间", icon: "chat", scenario: "travel" },
     { title: "AI 场景对话", description: "会议同步，说明进度和卡点", icon: "chat", scenario: "meeting" },
-    { title: "AI 场景对话", description: "面试介绍，讲一个具体例子", icon: "chat", scenario: "interview" }
+    { title: "AI 场景对话", description: "面试介绍，讲一个具体例子", icon: "chat", scenario: "interview" },
+    { title: "AI 场景对话", description: "餐厅点餐，询问推荐和买单", icon: "chat", scenario: "restaurant" },
+    { title: "AI 场景对话", description: "酒店入住，确认预订和早餐", icon: "chat", scenario: "hotel" },
+    { title: "AI 场景对话", description: "超市购物，询问价格和付款", icon: "chat", scenario: "shopping" },
+    { title: "AI 场景对话", description: "打车出行，确认目的地和费用", icon: "chat", scenario: "taxi" },
+    { title: "AI 场景对话", description: "看医生，描述症状和用药", icon: "chat", scenario: "doctor" }
   ],
   writing: [
     { title: "写 3 句话总结", description: "用今天的表达写自己的例句", icon: "pen" },
     { title: "写 1 段小对话", description: "把今天场景改成自己的真实需求", icon: "pen" },
     { title: "写 3 个替换句", description: "把 I want 换成更自然的表达", icon: "pen" },
-    { title: "写 1 个复盘", description: "记录今天最想记住的 1 个词", icon: "pen" }
+    { title: "写 1 个复盘", description: "记录今天最想记住的 1 个词", icon: "pen" },
+    { title: "写 3 个请求句", description: "用 Could I / Could you / I need 写真实需求", icon: "pen" },
+    { title: "写 1 个生活任务", description: "模拟今天要在国外完成的一件小事", icon: "pen" }
   ]
 };
 
 const dailyProfiles = {
   "daily-speaking": {
-    scenarios: ["coffee", "travel", "meeting", "interview"],
+    scenarios: ["coffee", "restaurant", "shopping", "taxi", "doctor", "hotel", "travel", "meeting", "interview"],
     titles: ["今天练 1 场真实开口，复习 3 个高频表达", "今天把一句话说自然，再练一个生活场景", "今天用英语完成一个小任务"],
     copies: ["内容会根据你的目标、等级和日期轮换；先敢说，再慢慢说自然。", "系统会优先安排日常最常用的词和句型，降低开口压力。", "今天重点是礼貌请求、确认信息和自然追问。"]
   },
   "work-english": {
-    scenarios: ["meeting", "interview", "coffee", "travel"],
+    scenarios: ["meeting", "interview", "hotel", "taxi", "coffee", "restaurant", "travel"],
     titles: ["今天练工作同步，复习会议高频表达", "今天练清楚表达进度和卡点", "今天把工作英语说得更礼貌"],
     copies: ["重点练 update、blocker、clarify 这类工作场景高频表达。", "内容会向会议、面试和协作沟通倾斜。", "先学能马上用的短句，再练更完整的解释。"]
   },
   travel: {
-    scenarios: ["travel", "coffee", "meeting", "interview"],
+    scenarios: ["travel", "hotel", "taxi", "restaurant", "shopping", "coffee", "doctor", "meeting", "interview"],
     titles: ["今天练旅行问路，复习求助表达", "今天练机场/车站/点餐里的常用句", "今天把旅行英语说完整"],
     copies: ["重点练问路、确认时间、求助和点餐。", "先掌握旅行中最常遇到的短问答。", "今天的内容更偏向出门就能用的表达。"]
   },
   exam: {
-    scenarios: ["interview", "meeting", "coffee", "travel"],
+    scenarios: ["interview", "meeting", "restaurant", "hotel", "coffee", "travel", "shopping"],
     titles: ["今天练基础语法和高频搭配", "今天用短句建立英语反应速度", "今天复习容易错的基础表达"],
     copies: ["重点练搭配、时态和更自然的句子选择。", "先把高频错误改掉，再慢慢提高表达长度。", "每题会给正确答案和中文解释，方便你复盘。"]
   }
@@ -214,6 +227,86 @@ const questions = [
       { text: "The big question is time line.", correct: false },
       { text: "Problem mostly timeline is.", correct: false }
     ]
+  },
+  {
+    skill: "餐厅表达",
+    text: "你想请服务员推荐一道菜，哪句最自然？",
+    explanation: "What do you recommend? 是餐厅里询问推荐的高频句。",
+    options: [
+      { text: "What do you recommend?", correct: true },
+      { text: "What food is good for you?", correct: false },
+      { text: "You recommend me food?", correct: false }
+    ]
+  },
+  {
+    skill: "酒店入住",
+    text: "你到酒店前台，想说“我有预订”，哪句最自然？",
+    explanation: "I have a reservation. 是酒店入住时最常用的开场句。",
+    options: [
+      { text: "I have a reservation.", correct: true },
+      { text: "I did a room.", correct: false },
+      { text: "I have ordered hotel.", correct: false }
+    ]
+  },
+  {
+    skill: "购物表达",
+    text: "你想问“这个多少钱？”，哪句最自然？",
+    explanation: "How much is this? 简单直接，购物场景非常高频。",
+    options: [
+      { text: "How much is this?", correct: true },
+      { text: "How money this?", correct: false },
+      { text: "What price are this?", correct: false }
+    ]
+  },
+  {
+    skill: "打车表达",
+    text: "你想说“请带我去这个地址”，哪句最自然？",
+    explanation: "Could you take me to this address? 礼貌且清楚，适合打车。",
+    options: [
+      { text: "Could you take me to this address?", correct: true },
+      { text: "You go me this address.", correct: false },
+      { text: "Please drive this place me.", correct: false }
+    ]
+  },
+  {
+    skill: "看医生",
+    text: "你想说“我喉咙痛”，哪句最自然？",
+    explanation: "I have a sore throat. 是描述症状的常用表达。",
+    options: [
+      { text: "I have a sore throat.", correct: true },
+      { text: "My throat is pain.", correct: false },
+      { text: "I am throat hurt.", correct: false }
+    ]
+  },
+  {
+    skill: "付款表达",
+    text: "你想问“可以刷卡吗？”，哪句最自然？",
+    explanation: "Can I pay by card? 适合餐厅、商店、酒店等付款场景。",
+    options: [
+      { text: "Can I pay by card?", correct: true },
+      { text: "Can I pay with carding?", correct: false },
+      { text: "I use card money?", correct: false }
+    ]
+  },
+  {
+    skill: "礼貌求助",
+    text: "你想问“你能帮我一下吗？”，哪句最自然？",
+    explanation: "Could you help me with this? 礼貌、清楚，也适合新手。",
+    options: [
+      { text: "Could you help me with this?", correct: true },
+      { text: "Can you help for me this?", correct: false },
+      { text: "You help me this thing?", correct: false }
+    ]
+  },
+  {
+    skill: "时间表达",
+    text: "你想说“我五分钟后到”，哪句最自然？",
+    explanation: "I'll be there in five minutes. 是到达时间的自然表达。",
+    options: [
+      { text: "I'll be there in five minutes.", correct: true },
+      { text: "I arrive after five minute.", correct: false },
+      { text: "I go there five minutes later now.", correct: false }
+    ]
   }
 ];
 
@@ -323,6 +416,136 @@ const scenarios = {
       "直走两个街区，然后右转。",
       "你可以请司机在酒店附近停。"
     ]
+  },
+  restaurant: {
+    label: "餐厅",
+    icon: "utensils",
+    name: "Lena, server",
+    hint: "练餐厅点餐和买单",
+    start: "Welcome in. Would you like to see the menu?",
+    startCn: "欢迎光临。你想先看菜单吗？",
+    suggestions: ["What do you recommend?", "Could I have the chicken rice?", "Can I get the bill, please?"],
+    suggestionsCn: ["你推荐什么？", "我可以要一份鸡肉饭吗？", "可以给我账单吗？"],
+    replies: [
+      "Of course. The chicken rice is very popular today.",
+      "Sure. Would you like anything to drink?",
+      "No problem. I will bring the bill to your table.",
+      "Would you like it spicy or mild?",
+      "Do you have any allergies we should know about?",
+      "Your order will be ready in about ten minutes."
+    ],
+    repliesCn: [
+      "当然。今天鸡肉饭很受欢迎。",
+      "可以。你想喝点什么吗？",
+      "没问题。我会把账单拿到你桌上。",
+      "你想要辣一点还是温和一点？",
+      "你有什么过敏需要我们知道吗？",
+      "你的餐大约十分钟后好。"
+    ]
+  },
+  hotel: {
+    label: "酒店",
+    icon: "hotel",
+    name: "Eva, front desk",
+    hint: "练酒店入住和询问服务",
+    start: "Good evening. Do you have a reservation with us?",
+    startCn: "晚上好。你有预订吗？",
+    suggestions: ["I have a reservation.", "Could I check in, please?", "Is breakfast included?"],
+    suggestionsCn: ["我有预订。", "我可以办理入住吗？", "包含早餐吗？"],
+    replies: [
+      "Sure. May I have your passport or ID, please?",
+      "Your room is on the fifth floor. Here is your key card.",
+      "Breakfast is served from seven to ten in the morning.",
+      "Check-out is before eleven tomorrow.",
+      "Would you like a room with one bed or two beds?",
+      "The elevator is just around the corner."
+    ],
+    repliesCn: [
+      "可以。请给我你的护照或身份证件。",
+      "你的房间在五楼。这是你的房卡。",
+      "早餐是早上七点到十点。",
+      "退房时间是明天十一点前。",
+      "你想要一张床还是两张床的房间？",
+      "电梯就在拐角处。"
+    ]
+  },
+  shopping: {
+    label: "购物",
+    icon: "shopping",
+    name: "Noah, shop assistant",
+    hint: "练超市购物和询价付款",
+    start: "Hi. Are you looking for anything in particular?",
+    startCn: "你好。你在找什么特别的东西吗？",
+    suggestions: ["How much is this?", "Do you have a smaller size?", "Can I pay by card?"],
+    suggestionsCn: ["这个多少钱？", "有小一点的尺码吗？", "可以刷卡吗？"],
+    replies: [
+      "This one is twelve dollars.",
+      "Yes, we have a smaller size over here.",
+      "Sure. You can pay by card or cash.",
+      "This item is on sale today.",
+      "Would you like a bag?",
+      "You can return it within seven days with the receipt."
+    ],
+    repliesCn: [
+      "这个十二美元。",
+      "有，我们这边有小一点的尺码。",
+      "当然。你可以刷卡或付现金。",
+      "这个商品今天打折。",
+      "你需要袋子吗？",
+      "凭小票七天内可以退货。"
+    ]
+  },
+  taxi: {
+    label: "打车",
+    icon: "car",
+    name: "Owen, driver",
+    hint: "练打车确认目的地和路线",
+    start: "Hi. Where would you like to go?",
+    startCn: "你好。你想去哪里？",
+    suggestions: ["Could you take me to this address?", "How long will it take?", "Can I pay by card?"],
+    suggestionsCn: ["你可以带我去这个地址吗？", "大概要多久？", "可以刷卡吗？"],
+    replies: [
+      "Sure. It should take about twenty minutes.",
+      "There is a little traffic, but this route is faster.",
+      "Yes, you can pay by card at the end.",
+      "Do you want me to drop you at the main entrance?",
+      "Please check if this is the right address.",
+      "I can wait here for a few minutes."
+    ],
+    repliesCn: [
+      "可以。大约需要二十分钟。",
+      "有点堵车，但这条路线更快。",
+      "可以，最后可以刷卡。",
+      "你想让我在正门放你下车吗？",
+      "请确认一下这个地址是否正确。",
+      "我可以在这里等几分钟。"
+    ]
+  },
+  doctor: {
+    label: "看医生",
+    icon: "heart",
+    name: "Dr. Kim",
+    hint: "练描述症状和听懂建议",
+    start: "Hi. What seems to be the problem today?",
+    startCn: "你好。今天哪里不舒服？",
+    suggestions: ["I have a sore throat.", "I have had a fever since yesterday.", "Do I need any medicine?"],
+    suggestionsCn: ["我喉咙痛。", "我从昨天开始发烧。", "我需要吃药吗？"],
+    replies: [
+      "I see. How long have you had this symptom?",
+      "Do you have a fever or a cough?",
+      "Please drink more water and rest today.",
+      "I will prescribe some medicine for the pain.",
+      "Are you allergic to any medicine?",
+      "If it gets worse, please come back tomorrow."
+    ],
+    repliesCn: [
+      "我明白。这个症状持续多久了？",
+      "你有发烧或咳嗽吗？",
+      "今天请多喝水并休息。",
+      "我会开一些止痛药。",
+      "你对任何药物过敏吗？",
+      "如果情况变严重，请明天再来。"
+    ]
   }
 };
 
@@ -361,6 +584,55 @@ const cards = [
     example: "For here, please.",
     exampleCn: "在这里喝，谢谢。",
     tag: "听力连读"
+  },
+  {
+    phrase: "What do you recommend?",
+    meaning: "询问推荐。餐厅、咖啡店、商店都能用。",
+    example: "What do you recommend for dinner?",
+    exampleCn: "晚餐你推荐什么？",
+    tag: "餐厅场景"
+  },
+  {
+    phrase: "I have a reservation.",
+    meaning: "表达“我有预订”，酒店和餐厅都很常见。",
+    example: "I have a reservation under Chen.",
+    exampleCn: "我有一个陈姓的预订。",
+    tag: "酒店入住"
+  },
+  {
+    phrase: "How much is this?",
+    meaning: "询问价格。购物时最实用的基础句。",
+    example: "How much is this bottle of water?",
+    exampleCn: "这瓶水多少钱？",
+    tag: "购物场景"
+  },
+  {
+    phrase: "Could you take me to...?",
+    meaning: "打车时告诉司机目的地，比 Go to... 更礼貌。",
+    example: "Could you take me to this address?",
+    exampleCn: "你可以带我去这个地址吗？",
+    tag: "打车场景"
+  },
+  {
+    phrase: "I have a sore throat.",
+    meaning: "描述症状。看医生时非常常用。",
+    example: "I have a sore throat and a fever.",
+    exampleCn: "我喉咙痛，而且发烧。",
+    tag: "看医生"
+  },
+  {
+    phrase: "Can I pay by card?",
+    meaning: "询问是否可以刷卡，付款场景高频。",
+    example: "Can I pay by card or cash?",
+    exampleCn: "我可以刷卡还是付现金？",
+    tag: "付款表达"
+  },
+  {
+    phrase: "I'll be there in...",
+    meaning: "表达多久后到达，比 I arrive after... 更自然。",
+    example: "I'll be there in five minutes.",
+    exampleCn: "我五分钟后到。",
+    tag: "时间表达"
   }
 ];
 
@@ -472,6 +744,78 @@ const highFrequencyWords = [
     example: "I'm not sure yet.",
     exampleCn: "我还不太确定。",
     reason: "表达不确定、确认和回应都能用。"
+  },
+  {
+    word: "recommend",
+    meaning: "推荐。餐厅、旅行、购物都常用。",
+    rank: 13,
+    usage: "68%",
+    example: "What do you recommend?",
+    exampleCn: "你推荐什么？",
+    reason: "不会点餐或选择时，可以主动开口。"
+  },
+  {
+    word: "reservation",
+    meaning: "预订。酒店、餐厅、机票都常见。",
+    rank: 14,
+    usage: "64%",
+    example: "I have a reservation.",
+    exampleCn: "我有预订。",
+    reason: "旅行和外出场景的核心名词。"
+  },
+  {
+    word: "price",
+    meaning: "价格。购物、打车、服务咨询都能用。",
+    rank: 15,
+    usage: "82%",
+    example: "What is the price?",
+    exampleCn: "价格是多少？",
+    reason: "询价时比复杂句更稳定。"
+  },
+  {
+    word: "address",
+    meaning: "地址。打车、酒店、外卖都高频。",
+    rank: 16,
+    usage: "80%",
+    example: "Could you take me to this address?",
+    exampleCn: "你可以带我去这个地址吗？",
+    reason: "出行沟通的基础词。"
+  },
+  {
+    word: "symptom",
+    meaning: "症状。看医生时可以用来描述身体情况。",
+    rank: 17,
+    usage: "58%",
+    example: "How long have you had this symptom?",
+    exampleCn: "这个症状持续多久了？",
+    reason: "医疗场景里帮助你听懂医生问题。"
+  },
+  {
+    word: "allergy",
+    meaning: "过敏。看医生和点餐都可能用到。",
+    rank: 18,
+    usage: "52%",
+    example: "I have a peanut allergy.",
+    exampleCn: "我对花生过敏。",
+    reason: "安全相关表达，必须优先掌握。"
+  },
+  {
+    word: "receipt",
+    meaning: "小票、收据。购物退换货时常用。",
+    rank: 19,
+    usage: "62%",
+    example: "Can I get a receipt?",
+    exampleCn: "可以给我一张小票吗？",
+    reason: "购物和报销场景都实用。"
+  },
+  {
+    word: "included",
+    meaning: "包含在内。酒店、餐厅、套餐常用。",
+    rank: 20,
+    usage: "66%",
+    example: "Is breakfast included?",
+    exampleCn: "包含早餐吗？",
+    reason: "确认服务内容时非常好用。"
   }
 ];
 
@@ -485,7 +829,12 @@ const iconPaths = {
   coffee: '<path d="M10 2v2"/><path d="M14 2v2"/><path d="M16 8h1a4 4 0 0 1 0 8h-1"/><path d="M4 8h12v6a6 6 0 0 1-12 0Z"/><path d="M6 20h10"/>',
   briefcase: '<path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><path d="M4 7h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2Z"/>',
   calendar: '<path d="M8 2v4"/><path d="M16 2v4"/><path d="M3 10h18"/><path d="M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z"/>',
-  map: '<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="M3.3 7 12 12l8.7-5"/><path d="M12 22V12"/>'
+  map: '<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="M3.3 7 12 12l8.7-5"/><path d="M12 22V12"/>',
+  utensils: '<path d="M4 3v8"/><path d="M8 3v8"/><path d="M4 7h4"/><path d="M6 11v10"/><path d="M14 3v18"/><path d="M14 3c4 2 5 6 2 9h-2"/>',
+  hotel: '<path d="M3 21V7a2 2 0 0 1 2-2h6v16"/><path d="M21 21V11a2 2 0 0 0-2-2h-8"/><path d="M7 9h.01"/><path d="M7 13h.01"/><path d="M15 13h2"/><path d="M15 17h2"/><path d="M2 21h20"/>',
+  shopping: '<path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/>',
+  car: '<path d="M5 17h14"/><path d="M6 17l1-6a3 3 0 0 1 3-2h4a3 3 0 0 1 3 2l1 6"/><path d="M7 17v2"/><path d="M17 17v2"/><path d="M8 13h.01"/><path d="M16 13h.01"/>',
+  heart: '<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8Z"/>'
 };
 
 const els = {
@@ -739,10 +1088,15 @@ function scenarioContextFor(key) {
 
 function forbiddenTopicsFor(key) {
   const topics = {
-    coffee: ["airport", "station", "train", "platform", "blue line", "hotel", "driver", "interview", "recruiter", "meeting", "blocker"],
-    travel: ["latte", "oat milk", "barista", "interview", "recruiter", "meeting blocker"],
-    interview: ["latte", "oat milk", "platform", "blue line", "train station"],
-    meeting: ["latte", "oat milk", "airport platform", "barista"]
+    coffee: ["airport", "station", "train", "platform", "blue line", "hotel", "driver", "interview", "recruiter", "meeting", "blocker", "doctor", "sore throat"],
+    travel: ["latte", "oat milk", "barista", "interview", "recruiter", "meeting blocker", "sore throat"],
+    interview: ["latte", "oat milk", "platform", "blue line", "train station", "menu", "bill", "sore throat"],
+    meeting: ["latte", "oat milk", "airport platform", "barista", "menu", "reservation", "sore throat"],
+    restaurant: ["platform", "blue line", "driver", "interview", "meeting blocker", "hotel room", "sore throat"],
+    hotel: ["latte", "barista", "platform", "blue line", "meeting blocker", "sore throat"],
+    shopping: ["barista", "platform", "blue line", "meeting blocker", "hotel room", "sore throat"],
+    taxi: ["latte", "barista", "interview", "meeting blocker", "menu", "bill", "sore throat"],
+    doctor: ["latte", "barista", "platform", "blue line", "meeting blocker", "hotel room", "shopping bag"]
   };
   return topics[key] || [];
 }
@@ -750,6 +1104,114 @@ function forbiddenTopicsFor(key) {
 function isOffScenarioReply(reply, key) {
   const text = String(reply || "").toLowerCase();
   return forbiddenTopicsFor(key).some((topic) => text.includes(topic.toLowerCase()));
+}
+
+function isUnclearEnglishInput(text) {
+  const clean = String(text || "").toLowerCase().replace(/[^a-z'\s]/g, " ").trim();
+  if (!clean) return true;
+  const words = clean.split(/\s+/).filter(Boolean);
+  const usefulWords = new Set([
+    "i", "you", "we", "can", "could", "would", "get", "have", "want", "need", "like", "please",
+    "coffee", "latte", "milk", "oat", "iced", "hot", "small", "medium", "large", "here", "go",
+    "time", "platform", "airport", "ticket", "help", "clarify", "repeat", "role", "work",
+    "meeting", "blocker", "timeline", "experience", "strength", "available", "sure", "thanks",
+    "menu", "order", "recommend", "bill", "water", "spicy", "mild", "allergy", "reservation",
+    "check", "room", "breakfast", "included", "passport", "id", "key", "card", "price",
+    "cash", "receipt", "bag", "size", "address", "driver", "traffic", "entrance", "taxi",
+    "doctor", "fever", "cough", "throat", "sore", "medicine", "symptom", "pain", "rest"
+  ]);
+  const knownCount = words.filter((word) => usefulWords.has(word)).length;
+  const hasSentenceShape = /\b(i|you|we|can|could|would|what|where|how|do|does|is|are|please)\b/.test(clean);
+  const hasVowels = words.every((word) => /[aeiou]/.test(word));
+
+  if (words.length === 1 && knownCount === 0 && clean.length >= 4) return true;
+  if (words.length <= 2 && knownCount === 0 && !hasSentenceShape) return true;
+  if (!hasVowels && knownCount === 0) return true;
+  return false;
+}
+
+function latestAiMessageText() {
+  const aiMessages = Array.from(els.messages.querySelectorAll(".bubble.ai"));
+  return aiMessages.at(-1)?.innerText || "";
+}
+
+function fallbackCoachReply({ text, scenario, scenarioKey, fallbackIndex, lastAiMessage }) {
+  const lower = String(text || "").toLowerCase();
+  const unclear = isUnclearEnglishInput(text);
+
+  if (unclear) {
+    const repair = {
+      coffee: {
+        reply: "No worries. Try saying: Could I get a medium iced latte?",
+        replyCn: "没关系。你可以试着说：我可以要一杯中杯冰拿铁吗？",
+        correction: "刚才的输入不像完整英文。可以先用：Could I get a medium iced latte?"
+      },
+      travel: {
+        reply: "No worries. Try saying: How do I get to the airport?",
+        replyCn: "没关系。你可以试着说：我怎么去机场？",
+        correction: "刚才的输入不像完整英文。可以先用：How do I get to the airport?"
+      },
+      interview: {
+        reply: "No worries. Try saying: Could you clarify the role?",
+        replyCn: "没关系。你可以试着说：可以解释一下这个职位吗？",
+        correction: "刚才的输入不像完整英文。可以先用：Could you clarify the role?"
+      },
+      meeting: {
+        reply: "No worries. Try saying: I can follow up tomorrow.",
+        replyCn: "没关系。你可以试着说：我明天可以继续跟进。",
+        correction: "刚才的输入不像完整英文。可以先用：I can follow up tomorrow."
+      },
+      restaurant: {
+        reply: "No worries. Try saying: What do you recommend?",
+        replyCn: "没关系。你可以试着说：你推荐什么？",
+        correction: "刚才的输入不像完整英文。可以先用：What do you recommend?"
+      },
+      hotel: {
+        reply: "No worries. Try saying: I have a reservation.",
+        replyCn: "没关系。你可以试着说：我有预订。",
+        correction: "刚才的输入不像完整英文。可以先用：I have a reservation."
+      },
+      shopping: {
+        reply: "No worries. Try saying: How much is this?",
+        replyCn: "没关系。你可以试着说：这个多少钱？",
+        correction: "刚才的输入不像完整英文。可以先用：How much is this?"
+      },
+      taxi: {
+        reply: "No worries. Try saying: Could you take me to this address?",
+        replyCn: "没关系。你可以试着说：你可以带我去这个地址吗？",
+        correction: "刚才的输入不像完整英文。可以先用：Could you take me to this address?"
+      },
+      doctor: {
+        reply: "No worries. Try saying: I have a sore throat.",
+        replyCn: "没关系。你可以试着说：我喉咙痛。",
+        correction: "刚才的输入不像完整英文。可以先用：I have a sore throat."
+      }
+    };
+    return repair[scenarioKey] || repair.coffee;
+  }
+
+  if (scenarioKey === "coffee") {
+    if (/\b(oat|milk)\b/.test(lower)) {
+      return {
+        reply: "Sure. Oat milk is fine. What size would you like?",
+        replyCn: "当然，燕麦奶可以。你想要什么杯型？",
+        correction: "这句能表达需求。更自然可以说：Could I have it with oat milk?"
+      };
+    }
+    if (/\b(small|medium|large)\b/.test(lower) || /size/.test(lastAiMessage.toLowerCase())) {
+      return {
+        reply: "Great. Would you like that for here or to go?",
+        replyCn: "好的。你是在这里喝还是带走？",
+        correction: "回答杯型时可以说：Medium, please."
+      };
+    }
+  }
+
+  return {
+    reply: scenario.replies[fallbackIndex],
+    replyCn: scenario.repliesCn?.[fallbackIndex] || "",
+    correction: ""
+  };
 }
 
 function applyChineseMode() {
@@ -1080,13 +1542,19 @@ function renderSuggestions() {
 async function sendMessage() {
   const text = els.chatInput.value.trim();
   if (!text) return;
+  const lastAiMessage = latestAiMessageText();
   addMessage("user", text);
   els.chatInput.value = "";
   const scenario = scenarios[state.activeScenario];
   const scenarioContext = scenarioContextFor(state.activeScenario);
   const fallbackIndex = (replyIndex + (dailyLesson?.replyOffset || 0)) % scenario.replies.length;
-  const reply = scenario.replies[fallbackIndex];
-  const replyCn = scenario.repliesCn?.[fallbackIndex] || "";
+  const fallback = fallbackCoachReply({
+    text,
+    scenario,
+    scenarioKey: state.activeScenario,
+    fallbackIndex,
+    lastAiMessage
+  });
   replyIndex += 1;
 
   setVoiceState("processing", "AI 正在根据你的句子给反馈...");
@@ -1099,20 +1567,27 @@ async function sendMessage() {
     userMessage: text,
     showChinese: state.showChinese,
     replyIndex,
-    recentMessages: Array.from(els.messages.querySelectorAll(".bubble")).slice(-6).map((node) => node.innerText)
+    recentMessages: Array.from(els.messages.querySelectorAll(".bubble")).slice(-6).map((node) => ({
+      role: node.classList.contains("user") ? "learner" : "coach",
+      text: node.innerText
+    }))
   });
   setVoiceState("idle", "点击麦克风开始说英语。测试版会在不支持录音时模拟识别结果。");
 
-  const aiReplyIsUsable = ai?.reply && !isOffScenarioReply(ai.reply, state.activeScenario);
-  const finalReply = aiReplyIsUsable ? ai.reply : reply;
-  const finalReplyCn = aiReplyIsUsable ? ai.replyCn : replyCn;
+  const aiReplyIsUsable =
+    ai?.reply &&
+    !isOffScenarioReply(ai.reply, state.activeScenario) &&
+    !(isUnclearEnglishInput(text) && !/try saying|could i|no worries|repeat|clarify/i.test(ai.reply));
+  const finalReply = aiReplyIsUsable ? ai.reply : fallback.reply;
+  const finalReplyCn = aiReplyIsUsable ? ai.replyCn : fallback.replyCn;
+  const finalCorrection = aiReplyIsUsable ? ai.correction : fallback.correction;
   addMessage("ai", finalReply, finalReplyCn);
 
-  if (aiReplyIsUsable && ai?.correction) {
-    els.feedbackCorrection.textContent = ai.correction;
+  if (finalCorrection) {
+    els.feedbackCorrection.textContent = finalCorrection;
   }
 
-  if (replyIndex >= 2 || (aiReplyIsUsable && ai?.correction)) {
+  if (replyIndex >= 2 || finalCorrection) {
     els.feedbackCard.hidden = false;
     completeTask("conversation");
   }
