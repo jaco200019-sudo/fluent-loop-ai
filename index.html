@@ -9,7 +9,7 @@
   <link rel="manifest" href="./manifest.webmanifest" />
   <link rel="icon" href="./icons/icon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="./icons/icon.svg" />
-  <link rel="stylesheet" href="./styles.css?v=13" />
+  <link rel="stylesheet" href="./styles.css?v=14" />
 </head>
 <body>
   <div id="app" class="app-shell" data-view="welcome">
@@ -27,6 +27,10 @@
         <button class="install-button" id="installButton" hidden>
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
           安装
+        </button>
+        <button class="install-button" id="shareAppButton" type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"/><path d="M16 6l-4-4-4 4"/><path d="M12 2v13"/></svg>
+          分享
         </button>
         <button class="profile-chip" id="profileChip" aria-label="当前等级">B1</button>
       </div>
@@ -177,6 +181,22 @@
           </div>
           <div class="badge-strip" id="badgeStrip"></div>
           <button class="secondary" id="startChallengeButton" type="button">开始挑战</button>
+        </div>
+
+        <div class="friend-panel">
+          <div>
+            <p class="eyebrow">Friend Beta</p>
+            <h2>邀请朋友一起测试</h2>
+            <p>网页版部署好后，直接把链接发给朋友。对方打开网页后可以安装到手机桌面，像 App 一样使用。</p>
+          </div>
+          <div class="friend-link" id="friendLinkText">部署后会显示当前测试链接</div>
+          <div class="friend-actions">
+            <button class="primary" id="copyInviteButton" type="button">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg>
+              复制测试链接
+            </button>
+            <button class="secondary" id="openLaunchButton" type="button">查看发布准备</button>
+          </div>
         </div>
 
         <div class="section-heading compact">
@@ -388,6 +408,25 @@
           <div class="achievement-list" id="achievementList"></div>
         </div>
 
+        <div class="launch-panel">
+          <div class="section-heading compact">
+            <div>
+              <p class="eyebrow">Launch Center</p>
+              <h2>发布准备中心</h2>
+            </div>
+            <span id="releaseVersion">v14</span>
+          </div>
+          <div class="launch-grid" id="launchChecklist"></div>
+          <div class="launch-note">
+            <strong>当前建议路线</strong>
+            <span>先继续用 PWA 给朋友测试，等真实用户反馈稳定后，再用 Capacitor 把同一套网页包装成 iOS / Android 安装包。</span>
+          </div>
+          <div class="action-row">
+            <button class="primary" id="copyLaunchLinkButton" type="button">复制上线链接</button>
+            <button class="secondary" id="exportLaunchPlanButton" type="button">导出发布计划</button>
+          </div>
+        </div>
+
         <div class="data-panel">
           <div class="section-heading compact">
             <div>
@@ -453,6 +492,6 @@
 
   <div class="xp-toast" id="xpToast" aria-live="polite"></div>
 
-  <script src="./app.js?v=13" defer></script>
+  <script src="./app.js?v=14" defer></script>
 </body>
 </html>

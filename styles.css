@@ -857,6 +857,50 @@ svg {
   line-height: 1.25;
 }
 
+.friend-panel {
+  margin-bottom: 16px;
+  padding: 16px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 360px) auto;
+  gap: 14px;
+  align-items: center;
+  border-radius: 8px;
+  border: 1px solid #dde9e3;
+  background: #fff;
+  box-shadow: var(--shadow);
+}
+
+.friend-panel h2 {
+  margin: 0;
+  font-size: 22px;
+  line-height: 1.18;
+}
+
+.friend-panel p:not(.eyebrow) {
+  margin: 6px 0 0;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.friend-link {
+  min-height: 44px;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  overflow-wrap: anywhere;
+  border-radius: 8px;
+  border: 1px dashed rgba(21, 111, 114, 0.28);
+  background: #f7fbf8;
+  color: var(--teal);
+  font-size: 13px;
+  font-weight: 850;
+}
+
+.friend-actions {
+  display: grid;
+  gap: 8px;
+}
+
 .achievement-panel {
   margin-top: 14px;
   padding: 16px;
@@ -892,6 +936,77 @@ svg {
   font-size: 11px;
   font-style: normal;
   font-weight: 900;
+}
+
+.launch-panel {
+  margin-top: 14px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: var(--shadow);
+}
+
+.launch-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.launch-item {
+  min-height: 112px;
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr);
+  gap: 10px;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #e5ede8;
+  background: #f8faf7;
+}
+
+.launch-item > span {
+  width: 38px;
+  height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  color: var(--teal);
+  background: #eaf4ee;
+}
+
+.launch-item.done > span {
+  color: #0d6f51;
+  background: #ddf6e8;
+}
+
+.launch-item strong {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 14px;
+  line-height: 1.25;
+}
+
+.launch-item p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.launch-note {
+  margin-top: 12px;
+  padding: 12px;
+  display: grid;
+  gap: 4px;
+  border-radius: 8px;
+  background: #f5f7ff;
+  border: 1px solid #e5e9fb;
+}
+
+.launch-note span {
+  color: var(--muted);
+  line-height: 1.45;
 }
 
 .today-hero {
@@ -1847,6 +1962,10 @@ svg {
     grid-template-columns: 1fr;
   }
 
+  .friend-panel {
+    grid-template-columns: 1fr;
+  }
+
   .hero-panel {
     min-height: 280px;
   }
@@ -1858,6 +1977,7 @@ svg {
   .course-library,
   .data-stat-grid,
   .achievement-list,
+  .launch-grid,
   .summary-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -1886,8 +2006,15 @@ svg {
     max-width: 190px;
   }
 
-  .install-button span {
-    display: none;
+  .install-button {
+    width: 44px;
+    padding: 0;
+    font-size: 0;
+  }
+
+  .install-button svg {
+    width: 20px;
+    height: 20px;
   }
 
   .main-surface {
@@ -1915,9 +2042,18 @@ svg {
   .course-library,
   .data-stat-grid,
   .achievement-list,
+  .launch-grid,
   .summary-grid,
   .review-actions {
     grid-template-columns: 1fr;
+  }
+
+  .friend-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .launch-panel .action-row {
+    flex-direction: column;
   }
 
   .badge-strip {

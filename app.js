@@ -1,4 +1,5 @@
 const STORAGE_KEY = "fluent-loop-pwa-state-v1";
+const APP_VERSION = "v14";
 
 const defaultState = {
   email: "me@example.com",
@@ -1375,6 +1376,7 @@ const els = {
   aiStatus: document.getElementById("aiStatus"),
   profileChip: document.getElementById("profileChip"),
   installButton: document.getElementById("installButton"),
+  shareAppButton: document.getElementById("shareAppButton"),
   brandButton: document.getElementById("brandButton"),
   loginForm: document.getElementById("loginForm"),
   emailInput: document.getElementById("emailInput"),
@@ -1401,6 +1403,9 @@ const els = {
   funXpValue: document.getElementById("funXpValue"),
   badgeStrip: document.getElementById("badgeStrip"),
   startChallengeButton: document.getElementById("startChallengeButton"),
+  friendLinkText: document.getElementById("friendLinkText"),
+  copyInviteButton: document.getElementById("copyInviteButton"),
+  openLaunchButton: document.getElementById("openLaunchButton"),
   courseCount: document.getElementById("courseCount"),
   courseLibraryList: document.getElementById("courseLibraryList"),
   openSummaryButton: document.getElementById("openSummaryButton"),
@@ -1440,6 +1445,10 @@ const els = {
   exportDataButton: document.getElementById("exportDataButton"),
   achievementCount: document.getElementById("achievementCount"),
   achievementList: document.getElementById("achievementList"),
+  releaseVersion: document.getElementById("releaseVersion"),
+  launchChecklist: document.getElementById("launchChecklist"),
+  copyLaunchLinkButton: document.getElementById("copyLaunchLinkButton"),
+  exportLaunchPlanButton: document.getElementById("exportLaunchPlanButton"),
   summaryMinutes: document.getElementById("summaryMinutes"),
   summaryTestScore: document.getElementById("summaryTestScore"),
   shareSummaryButton: document.getElementById("shareSummaryButton"),
@@ -1585,7 +1594,10 @@ function setView(view) {
     item.classList.toggle("active", item.dataset.nav === view);
   });
   els.app.dataset.view = view;
-  if (view === "progress") renderLearningData();
+  if (view === "progress") {
+    renderLearningData();
+    renderLaunchCenter();
+  }
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
@@ -1613,6 +1625,150 @@ function escapeHtml(text) {
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
+}
+
+function appPublicUrl() {
+  if (window.location.protocol === "file:") {
+    return "部署到 Netlify 后，这里会自动显示公开测试链接";
+  }
+  const path = window.location.pathname.replace(/index\.html$/, "");
+  return `${window.location.origin}${path}`;
+}
+
+async function copyText(text) {
+  try {
+    if (navigator.clipboard) {
+      await navigator.clipboard.writeText(text);
+      return true;
+    }
+  } catch {
+    // Fall back to a temporary textarea below.
+  }
+
+  const input = document.createElement("textarea");
+  input.value = text;
+  input.setAttribute("readonly", "");
+  input.style.position = "fixed";
+  input.style.opacity = "0";
+  document.body.appendChild(input);
+  input.focus();
+  input.select();
+  input.setSelectionRange(0, input.value.length);
+  const copied = document.execCommand("copy");
+  input.remove();
+  return copied;
+}
+
+function showNotice(message) {
+  if (!els.xpToast) return;
+  els.xpToast.textContent = message;
+  els.xpToast.classList.add("show");
+  window.clearTimeout(showNotice.timer);
+  showNotice.timer = window.setTimeout(() => els.xpToast.classList.remove("show"), 1500);
+}
+
+function launchChecklistItems() {
+  ensureLearningData();
+  const connected = els.aiStatus?.textContent.includes("AI 已连接");
+  return [
+    {
+      title: "PWA 安装体验",
+      detail: "已配置 manifest、图标和离线缓存，可先作为网页 App 给朋友安装。",
+      done: Boolean(document.querySelector('link[rel="manifest"]')) && "serviceWorker" in navigator
+    },
+    {
+      title: "AI 实时对话",
+      detail: connected ? "Netlify 环境变量已生效，AI 对话可用。" : "未连接时会使用离线自适应回复，部署后检查 OPENAI_API_KEY。",
+      done: connected
+    },
+    {
+      title: "生活课程内容",
+      detail: `当前已有 ${lifeCourses.length} 个生活场景课程，可以支持第一轮朋友测试。`,
+      done: lifeCourses.length >= 15
+    },
+    {
+      title: "学习数据记录",
+      detail: "任务、测试、复习、挑战会写入本地学习数据库，后续可接真实账号数据库。",
+      done: true
+    },
+    {
+      title: "朋友测试入口",
+      detail: "已准备复制邀请链接和分享按钮，部署后可以直接发给朋友。",
+      done: window.location.protocol !== "file:"
+    },
+    {
+      title: "手机 App 包装",
+      detail: "等 PWA 反馈稳定后，再用 Capacitor 包装成 iOS / Android 安装包。",
+      done: false
+    }
+  ];
+}
+
+function renderLaunchCenter() {
+  if (els.friendLinkText) {
+    els.friendLinkText.textContent = appPublicUrl();
+  }
+  if (els.releaseVersion) {
+    els.releaseVersion.textContent = APP_VERSION;
+  }
+  if (!els.launchChecklist) return;
+  els.launchChecklist.innerHTML = launchChecklistItems()
+    .map((item) => `
+      <article class="launch-item${item.done ? " done" : ""}">
+        <span>${item.done ? icon("check") : icon("arrow")}</span>
+        <div>
+          <strong>${escapeHtml(item.title)}</strong>
+          <p>${escapeHtml(item.detail)}</p>
+        </div>
+      </article>
+    `)
+    .join("");
+}
+
+async function shareApp() {
+  const url = appPublicUrl();
+  const text = `我在测试 FluentLoop，一个像真人陪练一样的英语学习 App。你可以打开试试：${url}`;
+  if (navigator.share && window.location.protocol !== "file:") {
+    await navigator.share({ title: "FluentLoop 英语陪练", text, url }).catch(() => {});
+    return;
+  }
+  const copied = await copyText(text);
+  showNotice(copied ? "测试链接已复制" : "链接已显示，可手动复制");
+}
+
+async function copyInviteLink() {
+  const url = appPublicUrl();
+  const copied = await copyText(url);
+  showNotice(copied ? "链接已复制" : "链接已显示，可手动复制");
+}
+
+function exportLaunchPlan() {
+  const payload = {
+    app: "FluentLoop",
+    version: APP_VERSION,
+    exportedAt: new Date().toISOString(),
+    testUrl: appPublicUrl(),
+    currentLevel: state.level,
+    courseCount: lifeCourses.length,
+    checklist: launchChecklistItems().map(({ title, detail, done }) => ({ title, detail, done })),
+    nextSteps: [
+      "继续用 Netlify PWA 发给朋友测试",
+      "收集 5-10 个真实用户反馈",
+      "补真实账号系统和云端学习数据库",
+      "稳定后用 Capacitor 包装 iOS / Android",
+      "准备隐私政策、用户协议、应用截图和商店描述"
+    ]
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `fluent-loop-launch-plan-${localDateKey()}.json`;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+  showNotice("发布计划已导出");
 }
 
 function translationFor(text) {
@@ -1887,6 +2043,7 @@ async function requestAiCoach(payload) {
 function updateAiStatus(connected, model = "") {
   els.aiStatus.classList.toggle("connected", connected);
   els.aiStatus.textContent = connected ? `AI 已连接${model ? ` · ${model}` : ""}` : "离线自适应";
+  renderLaunchCenter();
 }
 
 async function checkAiStatus() {
@@ -2103,6 +2260,7 @@ function recordLearningEvent(type, detail = {}) {
   saveState();
   renderLearningData();
   renderFun();
+  renderLaunchCenter();
   if (type !== "chat" && !detail.silent) {
     showXpToast(xpForEvent(event));
   }
@@ -2774,6 +2932,11 @@ function bindEvents() {
   els.resetDailyTestButton.addEventListener("click", resetDailyTest);
   els.exportDataButton.addEventListener("click", exportLearningData);
   els.shareSummaryButton.addEventListener("click", shareSummary);
+  els.shareAppButton.addEventListener("click", shareApp);
+  els.copyInviteButton.addEventListener("click", copyInviteLink);
+  els.copyLaunchLinkButton.addEventListener("click", copyInviteLink);
+  els.exportLaunchPlanButton.addEventListener("click", exportLaunchPlan);
+  els.openLaunchButton.addEventListener("click", () => setView("progress"));
   els.installButton.addEventListener("click", async () => {
     if (!deferredInstallPrompt) return;
     deferredInstallPrompt.prompt();
@@ -2813,6 +2976,7 @@ function init() {
   renderTasks();
   renderCourseLibrary();
   renderFun();
+  renderLaunchCenter();
   renderScenarios();
   resetChat();
   renderCard();
